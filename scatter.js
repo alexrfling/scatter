@@ -64,18 +64,20 @@ class Scatter extends Widget {
         me.scaleDomainsSetup();
         me.scaleRangesSetup();
 
-        me.xAxis = d3.axisBottom(me.xScale);
-        me.yAxis = d3.axisLeft(me.yScale);
-
-        // add the axes to the svg
-        me.xLabels = me.container.svg
-            .append('g')
-            .attr('transform', 'translate(' + me.options.PADDING + ',' + (me.container.svgHeight - me.options.PADDING) + ')')
-            .call(me.xAxis);
-        me.yLabels = me.container.svg
-            .append('g')
-            .attr('transform', 'translate(' + me.options.PADDING + ',' + me.options.PADDING + ')')
-            .call(me.yAxis);
+        me.xAxis = new Axis(
+            me.container.svg,
+            'axis',
+            me.xScale,
+            me.options.FONT_SIZE,
+            'bottom'
+        );
+        me.yAxis = new Axis(
+            me.container.svg,
+            'axis',
+            me.yScale,
+            me.options.FONT_SIZE,
+            'left'
+        );
 
         me.points = new ElementCollection(
             me.container.svg,
@@ -95,6 +97,9 @@ class Scatter extends Widget {
         me.anchorsSetup();
         me.scaleRangesPositionalSetup();
         me.positionAllElements();
+
+        me.xAxis.updateVis();
+        me.yAxis.updateVis();
 
         me.points.selection
             .attr('cx', me.points.attrs.cx)
@@ -132,6 +137,8 @@ class Scatter extends Widget {
         var me = this;
 
         me.points.anchor = [me.options.PADDING, me.options.PADDING];
+        me.xAxis.anchor = [me.options.PADDING, me.container.svgHeight - me.options.PADDING];
+        me.yAxis.anchor = [me.options.PADDING, me.options.PADDING];
     }
 
     scaleDomainsHorizontalSetup () {
@@ -188,20 +195,16 @@ class Scatter extends Widget {
         var me = this;
 
         me.points.position();
-        me.xLabels
-            .attr('transform', 'translate(' + me.options.PADDING + ',' + (me.container.svgHeight - me.options.PADDING) + ')');
-        me.yLabels
-            .attr('transform', 'translate(' + me.options.PADDING + ',' + me.options.PADDING + ')');
+        me.xAxis.position();
+        me.yAxis.position();
     }
 
     updateVisAllElements () {
         var me = this;
 
         me.points.updateVis(['cx', 'cy']);
-        me.xLabels
-            .call(me.xAxis);
-        me.yLabels
-            .call(me.yAxis);
+        me.xAxis.updateVis();
+        me.yAxis.updateVis();
     }
 
     resize (height) {
@@ -221,22 +224,11 @@ class Scatter extends Widget {
         me.setLimits();
 
         // scale updates
-        me.xScale.domain([me.xMin - 1, me.xMax + 1]);
-        me.yScale.domain([me.yMin - 1, me.yMax + 1]);
-
-        if (me.random) {
-            me.scaleFill.domain([me.sMin, me.sMax]);
-        }
+        me.scaleDomainsSetup();
 
         // visual updates
-        me.xLabels
-            .transition()
-            .duration(me.options.ANIM_DURATION)
-            .call(me.xAxis);
-        me.yLabels
-            .transition()
-            .duration(me.options.ANIM_DURATION)
-            .call(me.yAxis);
+        me.xAxis.updateVis(me.options.ANIM_DURATION);
+        me.yAxis.updateVis(me.options.ANIM_DURATION);
         me.points.selection
             .data(me.data, me.key)
             .transition()
