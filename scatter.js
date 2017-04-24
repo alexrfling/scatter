@@ -27,10 +27,9 @@ class Scatter extends Widget {
                 right: 10
             },
             ANIM_DURATION: 1000,
-            AXIS_OFFSET: 5,
             DEFAULT_HEIGHT: 400,
             FONT_SIZE: 10,
-            PADDING: 30
+            PADDING: 10
         });
     }
 
@@ -130,15 +129,18 @@ class Scatter extends Widget {
     marginsSetup () {
         var me = this;
 
-        // TODO
+        me.marginXLabel = 30;
+        me.marginYLabel = me.options.FONT_SIZE;
+        me.marginXChart = me.container.svgWidth - me.marginXLabel;
+        me.marginYChart = me.container.svgHeight - me.marginYLabel;
     }
 
     anchorsSetup () {
         var me = this;
 
-        me.points.anchor = [me.options.PADDING, me.options.PADDING];
-        me.xAxis.anchor = [me.options.PADDING, me.container.svgHeight - me.options.PADDING];
-        me.yAxis.anchor = [me.options.PADDING, me.options.PADDING];
+        me.points.anchor = [me.marginXLabel, me.options.PADDING];
+        me.xAxis.anchor = [me.marginXLabel, me.container.svgHeight - me.marginYLabel];
+        me.yAxis.anchor = [me.marginXLabel, me.options.PADDING];
     }
 
     scaleDomainsHorizontalSetup () {
@@ -172,8 +174,8 @@ class Scatter extends Widget {
     scaleRangesPositionalSetup () {
         var me = this;
 
-        me.xScale.range([0, me.container.svgWidth - 2 * me.options.PADDING]);
-        me.yScale.range([me.container.svgHeight - 2 * me.options.PADDING, 0]);
+        me.xScale.range([0, me.container.svgWidth - me.marginXLabel - me.options.PADDING]);
+        me.yScale.range([me.container.svgHeight - me.marginYLabel - me.options.PADDING, 0]);
     }
 
     scaleRangeFillSetup () {
