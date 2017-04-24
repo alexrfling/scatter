@@ -61,8 +61,8 @@ class Scatter extends Widget {
             {
                 cx: function (d) { return me.xScale(d.x); },
                 cy: function (d) { return me.yScale(d.y); },
-                r: function () { return 5; },
-                fill: function (d) { return me.colors[d.label]; }
+                r: function () { return (me.random ? 10 : 5); },
+                fill: function (d) { return (me.random ? me.scaleFill(Math.sqrt(d.x * d.x + d.y * d.y)) : me.colors[d.label]); }
             },
             me.data,
             me.key
@@ -75,7 +75,7 @@ class Scatter extends Widget {
 
         me.points.selection
             .transition()
-        	.duration(me.options.ANIM_DURATION)
+            .duration(me.options.ANIM_DURATION)
             .attr('r', me.points.attrs.r)
             .attr('fill', me.points.attrs.fill);
 
@@ -132,22 +132,13 @@ class Scatter extends Widget {
         me.points.selection
             .data(me.data, me.key)
             .transition()
-            .duration(me.options.ANIM_DURATION)
+            .duration(function (d) {
+                return (me.random ? Math.sqrt(d.x * d.x + d.y * d.y) / me.sMax * me.options.ANIM_DURATION : me.options.ANIM_DURATION);
+            })
             .attr('cx', me.points.attrs.cx)
-            .attr('cy', me.points.attrs.cy);
-
-        if (me.random) {
-            me.points
-                .data(me.data, me.key)
-                .transition()
-                .duration(function (d) {
-                    return Math.sqrt(d.x * d.x + d.y * d.y) / 10 * me.options.ANIM_DURATION;
-                })
-                .attr('cx', me.points.attrs.cx)
-                .attr('cy', me.points.attrs.cy)
-                .attr('fill', function (d) {
-                    return me.scaleFill(Math.sqrt(d.x * d.x + d.y * d.y));
-                });
-        }
+            .attr('cy', me.points.attrs.cy)
+            .attr('fill', function (d) {
+                return (me.random ? me.scaleFill(Math.sqrt(d.x * d.x + d.y * d.y)) : me.points.attrs.fill(d));
+            });
     }
 }
