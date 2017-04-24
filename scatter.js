@@ -1,3 +1,21 @@
+/*
+              marginXLabel                      marginXChart
+             +------------+----------------------------------------------------+
+             |            |                                                    |
+             |            |                                                    |
+             |            |                                                    |
+             |            |                                                    |
+             |            |                                                    |
+marginYChart |            |                                                    |
+             |            |                                                    |
+             |            |                                                    |
+             |            |                                                    |
+             |            |                                                    |
+             |            |                                                    |
+             +------------+----------------------------------------------------+
+marginYLabel |            |                                                    |
+             +------------+----------------------------------------------------+
+*/
 class Scatter extends Widget {
 
     constructor (id) {
@@ -38,21 +56,26 @@ class Scatter extends Widget {
             (options.height || me.options.DEFAULT_HEIGHT)
         );
 
-        me.xScale = d3.scaleLinear()
-            .domain([me.xMin - 1, me.xMax + 1])
-            .range([0, me.container.svgWidth - 2 * me.options.PADDING]);
-        me.yScale = d3.scaleLinear()
-            .domain([me.yMin - 1, me.yMax + 1])
-            .range([me.container.svgHeight - 2 * me.options.PADDING, 0]);
+        me.xScale = d3.scaleLinear();
+        me.yScale = d3.scaleLinear();
+        me.scaleFill = d3.scaleQuantize();
 
-        if (me.random) {
-            me.scaleFill = d3.scaleQuantize()
-                .domain([me.sMin, me.sMax])
-                .range(me.interpolateColors('#3366cc', 'lightgrey', '#109618', 256));
-        }
+        // initalize scales
+        me.scaleDomainsSetup();
+        me.scaleRangesSetup();
 
         me.xAxis = d3.axisBottom(me.xScale);
         me.yAxis = d3.axisLeft(me.yScale);
+
+        // add the axes to the svg
+        me.xLabels = me.container.svg
+            .append('g')
+            .attr('transform', 'translate(' + me.options.PADDING + ',' + (me.container.svgHeight - me.options.PADDING) + ')')
+            .call(me.xAxis);
+        me.yLabels = me.container.svg
+            .append('g')
+            .attr('transform', 'translate(' + me.options.PADDING + ',' + me.options.PADDING + ')')
+            .call(me.yAxis);
 
         me.points = new ElementCollection(
             me.container.svg,
@@ -68,6 +91,11 @@ class Scatter extends Widget {
             me.key
         );
 
+        me.marginsSetup();
+        me.anchorsSetup();
+        me.scaleRangesPositionalSetup();
+        me.positionAllElements();
+
         me.points.selection
             .attr('cx', me.points.attrs.cx)
             .attr('cy', me.points.attrs.cy)
@@ -78,19 +106,6 @@ class Scatter extends Widget {
             .duration(me.options.ANIM_DURATION)
             .attr('r', me.points.attrs.r)
             .attr('fill', me.points.attrs.fill);
-
-        me.points.anchor = [me.options.PADDING, me.options.PADDING];
-        me.points.position();
-
-        // add the axes to the svg
-        me.xLabels = me.container.svg
-            .append('g')
-            .attr('transform', 'translate(' + me.options.PADDING + ',' + (me.container.svgHeight - me.options.PADDING) + ')')
-            .call(me.xAxis);
-        me.yLabels = me.container.svg
-            .append('g')
-            .attr('transform', 'translate(' + me.options.PADDING + ',' + me.options.PADDING + ')')
-            .call(me.yAxis);
     }
 
     setLimits () {
@@ -105,6 +120,99 @@ class Scatter extends Widget {
             me.sMin = d3.min(me.data, function (d) { return Math.sqrt(d.x * d.x + d.y * d.y); });
             me.sMax = d3.max(me.data, function (d) { return Math.sqrt(d.x * d.x + d.y * d.y); });
         }
+    }
+
+    marginsSetup () {
+        var me = this;
+
+        // TODO
+    }
+
+    anchorsSetup () {
+        var me = this;
+
+        me.points.anchor = [me.options.PADDING, me.options.PADDING];
+    }
+
+    scaleDomainsHorizontalSetup () {
+        var me = this;
+
+        me.xScale.domain([me.xMin - 1, me.xMax + 1]);
+    }
+
+    scaleDomainsVerticalSetup () {
+        var me = this;
+
+        me.yScale.domain([me.yMin - 1, me.yMax + 1]);
+    }
+
+    scaleDomainFillSetup () {
+        var me = this;
+
+        if (me.random) {
+            me.scaleFill.domain([me.sMin, me.sMax]);
+        }
+    }
+
+    scaleDomainsSetup () {
+        var me = this;
+
+        me.scaleDomainsHorizontalSetup();
+        me.scaleDomainsVerticalSetup();
+        me.scaleDomainFillSetup();
+    }
+
+    scaleRangesPositionalSetup () {
+        var me = this;
+
+        me.xScale.range([0, me.container.svgWidth - 2 * me.options.PADDING]);
+        me.yScale.range([me.container.svgHeight - 2 * me.options.PADDING, 0]);
+    }
+
+    scaleRangeFillSetup () {
+        var me = this;
+
+        if (me.random) {
+            me.scaleFill.range(me.interpolateColors('#3366cc', 'lightgrey', '#109618', 256));
+        }
+    }
+
+    scaleRangesSetup () {
+        var me = this;
+
+        me.scaleRangesPositionalSetup();
+        me.scaleRangeFillSetup();
+    }
+
+    positionAllElements () {
+        var me = this;
+
+        me.points.position();
+        me.xLabels
+            .attr('transform', 'translate(' + me.options.PADDING + ',' + (me.container.svgHeight - me.options.PADDING) + ')');
+        me.yLabels
+            .attr('transform', 'translate(' + me.options.PADDING + ',' + me.options.PADDING + ')');
+    }
+
+    updateVisAllElements () {
+        var me = this;
+
+        me.points.updateVis(['cx', 'cy']);
+        me.xLabels
+            .call(me.xAxis);
+        me.yLabels
+            .call(me.yAxis);
+    }
+
+    resize (height) {
+        var me = this;
+        me.container.resize(height);
+
+        me.marginsSetup();
+        me.anchorsSetup();
+        me.scaleRangesPositionalSetup();
+        me.positionAllElements();
+        me.updateVisAllElements();
     }
 
     updateData (data) {
