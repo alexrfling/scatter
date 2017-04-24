@@ -202,7 +202,7 @@ class Scatter extends Widget {
     updateVisAllElements () {
         var me = this;
 
-        me.points.updateVis(['cx', 'cy']);
+        me.points.updateVis('cx', 'cy');
         me.xAxis.updateVis();
         me.yAxis.updateVis();
     }
