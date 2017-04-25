@@ -43,6 +43,7 @@ class Scatter extends Widget {
         me.labelKey = options.labelKey;
         me.colors = options.colors;
         me.random = options.random;
+        me.skipTransitions = options.skipTransitions;
         me.setLimits();
 
         // clear out DOM elements inside parent
@@ -108,11 +109,15 @@ class Scatter extends Widget {
             .attr('cy', me.points.attrs.cy)
             .style('opacity', 0.5);
 
-        me.points.selection
-            .transition()
-            .duration(me.options.ANIM_DURATION)
-            .attr('r', me.points.attrs.r)
-            .attr('fill', me.points.attrs.fill);
+        if (me.skipTransitions) {
+            me.points.updateVis('r', 'fill');
+        } else {
+            me.points.selection
+                .transition()
+                .duration(me.options.ANIM_DURATION)
+                .attr('r', me.points.attrs.r)
+                .attr('fill', me.points.attrs.fill);
+        }
     }
 
     setLimits () {
@@ -232,19 +237,31 @@ class Scatter extends Widget {
         me.scaleDomainsSetup();
 
         // visual updates
-        me.xAxis.updateVis(me.options.ANIM_DURATION);
-        me.yAxis.updateVis(me.options.ANIM_DURATION);
-        me.points.selection
-            .data(me.data, me.key)
-            .transition()
-            .duration(function (d) {
-                return (me.random ? Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]) / me.sMax * me.options.ANIM_DURATION : me.options.ANIM_DURATION);
-            })
-            .attr('cx', me.points.attrs.cx)
-            .attr('cy', me.points.attrs.cy)
-            .attr('fill', function (d) {
-                return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.points.attrs.fill(d));
-            });
+        if (me.skipTransitions) {
+            me.xAxis.updateVis();
+            me.yAxis.updateVis();
+            me.points.selection
+                .data(me.data, me.key)
+                .attr('cx', me.points.attrs.cx)
+                .attr('cy', me.points.attrs.cy)
+                .attr('fill', function (d) {
+                    return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.points.attrs.fill(d));
+                });
+        } else {
+            me.xAxis.updateVis(me.options.ANIM_DURATION);
+            me.yAxis.updateVis(me.options.ANIM_DURATION);
+            me.points.selection
+                .data(me.data, me.key)
+                .transition()
+                .duration(function (d) {
+                    return (me.random ? Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]) / me.sMax * me.options.ANIM_DURATION : me.options.ANIM_DURATION);
+                })
+                .attr('cx', me.points.attrs.cx)
+                .attr('cy', me.points.attrs.cy)
+                .attr('fill', function (d) {
+                    return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.points.attrs.fill(d));
+                });
+        }
     }
 
     updateKeys (xKey, yKey) {
@@ -257,18 +274,30 @@ class Scatter extends Widget {
         me.scaleDomainsSetup();
 
         // visual updates
-        me.xAxis.updateVis(me.options.ANIM_DURATION);
-        me.yAxis.updateVis(me.options.ANIM_DURATION);
-        me.points.selection
-            .data(me.data, me.key)
-            .transition()
-            .duration(function (d) {
-                return (me.random ? Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]) / me.sMax * me.options.ANIM_DURATION : me.options.ANIM_DURATION);
-            })
-            .attr('cx', me.points.attrs.cx)
-            .attr('cy', me.points.attrs.cy)
-            .attr('fill', function (d) {
-                return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.points.attrs.fill(d));
-            });
+        if (me.skipTransitions) {
+            me.xAxis.updateVis();
+            me.yAxis.updateVis();
+            me.points.selection
+                .data(me.data, me.key)
+                .attr('cx', me.points.attrs.cx)
+                .attr('cy', me.points.attrs.cy)
+                .attr('fill', function (d) {
+                    return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.points.attrs.fill(d));
+                });
+        } else {
+            me.xAxis.updateVis(me.options.ANIM_DURATION);
+            me.yAxis.updateVis(me.options.ANIM_DURATION);
+            me.points.selection
+                .data(me.data, me.key)
+                .transition()
+                .duration(function (d) {
+                    return (me.random ? Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]) / me.sMax * me.options.ANIM_DURATION : me.options.ANIM_DURATION);
+                })
+                .attr('cx', me.points.attrs.cx)
+                .attr('cy', me.points.attrs.cy)
+                .attr('fill', function (d) {
+                    return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.points.attrs.fill(d));
+                });
+        }
     }
 }
