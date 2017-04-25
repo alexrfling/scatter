@@ -96,6 +96,34 @@ class Scatter extends Widget {
             me.key
         );
 
+        me.tooltip = d3.tip()
+            .attr('class', 'd3-tip')
+            .direction('w')
+            .offset([0, -10])
+            .html(function (d) {
+                return '<table>' +
+                    '<tr><td>' + me.xKey + '</td><td>' + d[me.xKey] + '</td></tr>' +
+                    '<tr><td>' + me.yKey + '</td><td>' + d[me.yKey] + '</td></tr>' +
+                    '<tr><td>' + me.labelKey + '</td><td>' + d[me.labelKey] + '</td></tr>' +
+                    '</table>';
+            });
+
+        // invoke tooltip
+        me.container.svg
+            .call(me.tooltip);
+
+        me.points.selection
+            .on('mouseover', function (d) {
+                d3.select(this)
+                    .style('opacity', 1);
+                me.tooltip.show(d);
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                    .style('opacity', 0.5);
+                me.tooltip.hide();
+            })
+
         me.marginsSetup();
         me.anchorsSetup();
         me.scaleRangesPositionalSetup();
