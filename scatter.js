@@ -38,6 +38,8 @@ class Scatter extends Widget {
         options = (options || {});
 
         me.data = data;
+        me.xKey = options.xKey;
+        me.yKey = options.yKey;
         me.colors = options.colors;
         me.random = options.random;
         me.setLimits();
@@ -83,10 +85,10 @@ class Scatter extends Widget {
             'points',
             'circle',
             {
-                cx: function (d) { return me.xScale(d.x); },
-                cy: function (d) { return me.yScale(d.y); },
+                cx: function (d) { return me.xScale(d[me.xKey]); },
+                cy: function (d) { return me.yScale(d[me.yKey]); },
                 r: function () { return (me.random ? 10 : 5); },
-                fill: function (d) { return (me.random ? me.scaleFill(Math.sqrt(d.x * d.x + d.y * d.y)) : me.colors[d.label]); }
+                fill: function (d) { return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.colors[d.label]); }
             },
             me.data,
             me.key
@@ -115,14 +117,14 @@ class Scatter extends Widget {
     setLimits () {
         var me = this;
 
-        me.xMin = d3.min(me.data, function (d) { return d.x; });
-        me.xMax = d3.max(me.data, function (d) { return d.x; });
-        me.yMin = d3.min(me.data, function (d) { return d.y; });
-        me.yMax = d3.max(me.data, function (d) { return d.y; });
+        me.xMin = d3.min(me.data, function (d) { return d[me.xKey]; });
+        me.xMax = d3.max(me.data, function (d) { return d[me.xKey]; });
+        me.yMin = d3.min(me.data, function (d) { return d[me.yKey]; });
+        me.yMax = d3.max(me.data, function (d) { return d[me.yKey]; });
 
         if (me.random) {
-            me.sMin = d3.min(me.data, function (d) { return Math.sqrt(d.x * d.x + d.y * d.y); });
-            me.sMax = d3.max(me.data, function (d) { return Math.sqrt(d.x * d.x + d.y * d.y); });
+            me.sMin = d3.min(me.data, function (d) { return Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]); });
+            me.sMax = d3.max(me.data, function (d) { return Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]); });
         }
     }
 
@@ -235,12 +237,37 @@ class Scatter extends Widget {
             .data(me.data, me.key)
             .transition()
             .duration(function (d) {
-                return (me.random ? Math.sqrt(d.x * d.x + d.y * d.y) / me.sMax * me.options.ANIM_DURATION : me.options.ANIM_DURATION);
+                return (me.random ? Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]) / me.sMax * me.options.ANIM_DURATION : me.options.ANIM_DURATION);
             })
             .attr('cx', me.points.attrs.cx)
             .attr('cy', me.points.attrs.cy)
             .attr('fill', function (d) {
-                return (me.random ? me.scaleFill(Math.sqrt(d.x * d.x + d.y * d.y)) : me.points.attrs.fill(d));
+                return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.points.attrs.fill(d));
+            });
+    }
+
+    updateKeys (xKey, yKey) {
+        var me = this;
+        me.xKey = (xKey ? xKey : me.xKey);
+        me.yKey = (yKey ? yKey : me.yKey);
+        me.setLimits();
+
+        // scale updates
+        me.scaleDomainsSetup();
+
+        // visual updates
+        me.xAxis.updateVis(me.options.ANIM_DURATION);
+        me.yAxis.updateVis(me.options.ANIM_DURATION);
+        me.points.selection
+            .data(me.data, me.key)
+            .transition()
+            .duration(function (d) {
+                return (me.random ? Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]) / me.sMax * me.options.ANIM_DURATION : me.options.ANIM_DURATION);
+            })
+            .attr('cx', me.points.attrs.cx)
+            .attr('cy', me.points.attrs.cy)
+            .attr('fill', function (d) {
+                return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.points.attrs.fill(d));
             });
     }
 }

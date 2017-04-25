@@ -14,6 +14,18 @@
 </head>
 <body>
     <button onclick='scatter.updateData(genData(1000));'>update</button>
+    <select onchange='scatter.updateKeys(this.value, null);'>
+		<option value='w'>w</option>
+		<option value='x' selected>x</option>
+		<option value='y'>y</option>
+		<option value='z'>z</option>
+	</select>
+    <select onchange='scatter.updateKeys(null, this.value);'>
+		<option value='w'>w</option>
+		<option value='x'>x</option>
+		<option value='y' selected>y</option>
+		<option value='z'>z</option>
+	</select>
     <div id='parent' style='border:solid 1px black;'></div>
 	<script>
         function genData (size) {
@@ -23,8 +35,10 @@
             for (var j = 0; j < size; j++) {
                 arr.push({
                     key: String(j),
+                    w: Math.floor(Math.random() * max) - max / 2,
                     x: Math.floor(Math.random() * max) - max / 2,
                     y: Math.floor(Math.random() * max) - max / 2,
+                    z: Math.floor(Math.random() * max) - max / 2,
                     label: (Math.random() < 0.5 ? 'yes' : 'no')
                 });
             }
@@ -39,6 +53,8 @@
                 yes: '#109618',
                 no: '#3366cc'
             },
+            xKey: 'x',
+            yKey: 'y',
             random: false,
 			height: 580
 		};
