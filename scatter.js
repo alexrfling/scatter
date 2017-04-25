@@ -40,6 +40,7 @@ class Scatter extends Widget {
         me.data = data;
         me.xKey = options.xKey;
         me.yKey = options.yKey;
+        me.labelKey = options.labelKey;
         me.colors = options.colors;
         me.random = options.random;
         me.setLimits();
@@ -88,7 +89,7 @@ class Scatter extends Widget {
                 cx: function (d) { return me.xScale(d[me.xKey]); },
                 cy: function (d) { return me.yScale(d[me.yKey]); },
                 r: function () { return (me.random ? 10 : 5); },
-                fill: function (d) { return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.colors[d.label]); }
+                fill: function (d) { return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.colors[d[me.labelKey]]); }
             },
             me.data,
             me.key
