@@ -120,7 +120,7 @@ class Scatter extends Widget {
             })
             .on('mouseout', function (d) {
                 d3.select(this)
-                    .style('opacity', 0.5);
+                    .style('opacity', 0.25);
                 me.tooltip.hide();
             })
 
@@ -135,7 +135,7 @@ class Scatter extends Widget {
         me.points.selection
             .attr('cx', me.points.attrs.cx)
             .attr('cy', me.points.attrs.cy)
-            .style('opacity', 0.5);
+            .style('opacity', 0.25);
 
         if (me.skipTransitions) {
             me.points.updateVis('r', 'fill');
