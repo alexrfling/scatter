@@ -30,15 +30,18 @@
 	<script>
         function genData (size) {
             var arr = [];
-            var max = Math.floor(Math.random() * 256);
+            var wMax = Math.floor(Math.random() * 256);
+            var xMax = Math.floor(Math.random() * 256);
+            var yMax = Math.floor(Math.random() * 256);
+            var zMax = Math.floor(Math.random() * 256);
 
             for (var j = 0; j < size; j++) {
                 arr.push({
                     key: String(j),
-                    w: Math.floor(Math.random() * max) - max / 2,
-                    x: Math.floor(Math.random() * max) - max / 2,
-                    y: Math.floor(Math.random() * max) - max / 2,
-                    z: Math.floor(Math.random() * max) - max / 2,
+                    w: Math.floor(Math.random() * wMax) - wMax / 2,
+                    x: Math.floor(Math.random() * xMax) - xMax / 2,
+                    y: Math.floor(Math.random() * yMax) - yMax / 2,
+                    z: Math.floor(Math.random() * zMax) - zMax / 2,
                     label: (Math.random() < 0.5 ? 'yes' : 'no')
                 });
             }
