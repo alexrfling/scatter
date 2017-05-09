@@ -288,10 +288,10 @@ class Scatter extends Widget {
             me.points.selection
                 .data(me.data, me.key)
                 .transition()
-                .duration(me.duration)
+                .duration(function (d) { return me.duration.call(me, d); })
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
-                .attr('fill', me.fill);
+                .attr('fill', function (d) { return me.fill.call(me, d); });
         }
     }
 
@@ -319,10 +319,10 @@ class Scatter extends Widget {
             me.points.selection
                 .data(me.data, me.key)
                 .transition()
-                .duration(me.duration)
+                .duration(function (d) { return me.duration.call(me, d); })
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
-                .attr('fill', me.fill);
+                .attr('fill', function (d) { return me.fill.call(me, d); });
         }
     }
 }
