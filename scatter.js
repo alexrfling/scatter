@@ -40,6 +40,7 @@ class Scatter extends Widget {
         me.data = data;
         me.xKey = options.xKey;
         me.yKey = options.yKey;
+        me.rKey = options.rKey;
         me.labelKey = options.labelKey;
         me.colors = options.colors;
         me.random = options.random;
@@ -61,6 +62,7 @@ class Scatter extends Widget {
 
         me.xScale = d3.scaleLinear();
         me.yScale = d3.scaleLinear();
+        me.rScale = d3.scaleLinear();
         me.scaleFill = d3.scaleQuantize();
 
         // initalize scales
@@ -89,7 +91,7 @@ class Scatter extends Widget {
             {
                 cx: function (d) { return me.xScale(d[me.xKey]); },
                 cy: function (d) { return me.yScale(d[me.yKey]); },
-                r: function () { return 8; },
+                r: function (d) { return me.rScale(d[me.rKey]); },
                 fill: function (d) { return (me.random ? me.scaleFill(Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey])) : me.colors[d[me.labelKey]]); }
             },
             me.data,
@@ -155,6 +157,8 @@ class Scatter extends Widget {
         me.xMax = d3.max(me.data, function (d) { return d[me.xKey]; });
         me.yMin = d3.min(me.data, function (d) { return d[me.yKey]; });
         me.yMax = d3.max(me.data, function (d) { return d[me.yKey]; });
+        me.rMin = d3.min(me.data, function (d) { return d[me.rKey]; });
+        me.rMax = d3.max(me.data, function (d) { return d[me.rKey]; });
         me.sMin = d3.min(me.data, function (d) { return Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]); });
         me.sMax = d3.max(me.data, function (d) { return Math.sqrt(d[me.xKey] * d[me.xKey] + d[me.yKey] * d[me.yKey]); });
     }
@@ -188,6 +192,12 @@ class Scatter extends Widget {
         me.yScale.domain([me.yMin - 1, me.yMax + 1]);
     }
 
+    scaleDomainsSizeSetup () {
+        var me = this;
+
+        me.rScale.domain([me.rMin, me.rMax]);
+    }
+
     scaleDomainFillSetup () {
         var me = this;
 
@@ -201,6 +211,7 @@ class Scatter extends Widget {
 
         me.scaleDomainsHorizontalSetup();
         me.scaleDomainsVerticalSetup();
+        me.scaleDomainsSizeSetup();
         me.scaleDomainFillSetup();
     }
 
@@ -209,6 +220,12 @@ class Scatter extends Widget {
 
         me.xScale.range([0, me.container.svgWidth - me.marginXLabel - me.options.PADDING]);
         me.yScale.range([me.container.svgHeight - me.marginYLabel - me.options.PADDING, 0]);
+    }
+
+    scaleRangeSizeSetup () {
+        var me = this;
+
+        me.rScale.range([4, 16]);
     }
 
     scaleRangeFillSetup () {
@@ -224,6 +241,7 @@ class Scatter extends Widget {
 
         me.scaleRangesPositionalSetup();
         me.scaleRangeFillSetup();
+        me.scaleRangeSizeSetup();
     }
 
     positionAllElements () {
@@ -281,7 +299,8 @@ class Scatter extends Widget {
                 .data(me.data, me.key)
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
-                .attr('fill', me.fill);
+                .attr('r', me.points.attrs.r)
+                .attr('fill', function (d) { return me.fill.call(me, d); });
         } else {
             me.xAxis.updateVis(me.options.ANIM_DURATION);
             me.yAxis.updateVis(me.options.ANIM_DURATION);
@@ -291,14 +310,16 @@ class Scatter extends Widget {
                 .duration(function (d) { return me.duration.call(me, d); })
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
+                .attr('r', me.points.attrs.r)
                 .attr('fill', function (d) { return me.fill.call(me, d); });
         }
     }
 
-    updateKeys (xKey, yKey) {
+    updateKeys (xKey, yKey, rKey) {
         var me = this;
         me.xKey = (xKey ? xKey : me.xKey);
         me.yKey = (yKey ? yKey : me.yKey);
+        me.rKey = (rKey ? rKey : me.rKey);
         me.setLimits();
 
         // scale updates
@@ -312,7 +333,8 @@ class Scatter extends Widget {
                 .data(me.data, me.key)
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
-                .attr('fill', me.fill);
+                .attr('r', me.points.attrs.r)
+                .attr('fill', function (d) { return me.fill.call(me, d); });
         } else {
             me.xAxis.updateVis(me.options.ANIM_DURATION);
             me.yAxis.updateVis(me.options.ANIM_DURATION);
@@ -322,6 +344,7 @@ class Scatter extends Widget {
                 .duration(function (d) { return me.duration.call(me, d); })
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
+                .attr('r', me.points.attrs.r)
                 .attr('fill', function (d) { return me.fill.call(me, d); });
         }
     }
