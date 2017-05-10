@@ -377,7 +377,8 @@ class Scatter extends Widget {
             me.points.selection
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
-                .attr('r', me.points.attrs.r);
+                .attr('r', me.points.attrs.r)
+                .attr('fill', me.points.attrs.fill);
         } else {
             me.xAxis.updateVis(me.options.ANIM_DURATION);
             me.yAxis.updateVis(me.options.ANIM_DURATION);
@@ -386,7 +387,8 @@ class Scatter extends Widget {
                 .duration(me.points.attrs.duration)
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
-                .attr('r', me.points.attrs.r);
+                .attr('r', me.points.attrs.r)
+                .attr('fill', me.points.attrs.fill);
         }
     }
 }
