@@ -19,18 +19,45 @@
 		<option value='x' selected>x</option>
 		<option value='y'>y</option>
 		<option value='z'>z</option>
+        <option value='xy'>xy</option>
+        <option value='zz'>zz</option>
 	</select>
     <select onchange='scatter.updateKeys(null, this.value);'>
 		<option value='w'>w</option>
 		<option value='x'>x</option>
 		<option value='y' selected>y</option>
 		<option value='z'>z</option>
+        <option value='xy'>xy</option>
+        <option value='zz'>zz</option>
 	</select>
     <select onchange='scatter.updateKeys(null, null, this.value);'>
 		<option value='w'>w</option>
 		<option value='x'>x</option>
 		<option value='y'>y</option>
 		<option value='z' selected>z</option>
+        <option value='xy'>xy</option>
+        <option value='zz'>zz</option>
+	</select>
+    <select onchange='scatter.updateKeys(null, null, null, this.value);'>
+		<option value='w'>w</option>
+		<option value='x'>x</option>
+		<option value='y'>y</option>
+		<option value='z'>z</option>
+        <option value='xy'>xy</option>
+        <option value='zz'>zz</option>
+        <option value='label' selected>label</option>
+	</select>
+    <select onchange='scatter.updateKeys(null, null, null, null, this.value);'>
+		<option value='w'>w</option>
+		<option value='x'>x</option>
+		<option value='y'>y</option>
+		<option value='z'>z</option>
+        <option value='xy'>xy</option>
+        <option value='zz' selected>zz</option>
+	</select>
+    <select onchange='scatter.updateColorScaling(this.value === "true");'>
+		<option value='true' selected>cat</option>
+		<option value='false'>con</option>
 	</select>
     <div id='parent' style='border:solid 1px black;'></div>
 	<script>
@@ -42,14 +69,19 @@
             var zMax = Math.floor(Math.random() * 256);
 
             for (var j = 0; j < size; j++) {
-                arr.push({
+                var point = {
                     key: String(j),
                     w: Math.floor(Math.random() * wMax) - wMax / 2,
                     x: Math.floor(Math.random() * xMax) - xMax / 2,
                     y: Math.floor(Math.random() * yMax) - yMax / 2,
                     z: Math.floor(Math.random() * zMax) - zMax / 2,
                     label: (Math.random() < 0.5 ? 'yes' : 'no')
-                });
+                };
+
+                point.xy = Math.sqrt(point.x * point.x + point.y * point.y);
+                point.zz = (2 + 8 * Math.random()) * point.z + (Math.random() - 0.5) * zMax
+
+                arr.push(point);
             }
 
             return arr;
@@ -65,8 +97,9 @@
             xKey: 'x',
             yKey: 'y',
             rKey: 'z',
-            labelKey: 'label',
-            //random: true,
+            fKeyCategorical: 'label',
+            fKeyContinuous: 'zz',
+            categorical: true,
 			height: 580
 		};
 
