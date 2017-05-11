@@ -49,7 +49,9 @@ class Scatter extends Widget {
             '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300',
             '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac'
         ]);
-        me.colorsContinuous = (options.colorsContinuous || me.interpolateColors('#3366cc', 'lightgrey', '#109618', 256));
+        me.loColor = (options.loColor || '#3366cc');
+        me.hiColor = (options.hiColor || '#109618');
+        me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, 'lightgrey', me.hiColor, 256));
         me.categorical = options.categorical;
         me.skipTransitions = options.skipTransitions;
         me.setLimits();
@@ -305,6 +307,26 @@ class Scatter extends Widget {
         me.scaleRangesPositionalSetup();
         me.positionAllElements();
         me.updateVisAllElements();
+    }
+
+    updateColors(loColor, hiColor) {
+        var me = this;
+        me.loColor = (loColor ? loColor : me.loColor);
+        me.hiColor = (hiColor ? hiColor : me.hiColor);
+        me.colorsContinuous = me.interpolateColors(me.loColor, 'lightgrey', me.hiColor, 256);
+
+        // scale updates
+        me.scaleRangeFillSetup();
+
+        // visual updates
+        if (me.skipTransitions) {
+            me.points.updateVis('fill');
+        } else {
+            me.points.selection
+                .transition()
+                .duration(me.points.attrs.duration)
+                .attr('fill', me.points.attrs.fill);
+        }
     }
 
     updateColorScaling (categorical) {
