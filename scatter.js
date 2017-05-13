@@ -53,6 +53,8 @@ class Scatter extends Widget {
         me.hiColor = (options.hiColor || '#109618');
         me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, 'lightgrey', me.hiColor, 256));
         me.categorical = options.categorical;
+        me.minRadius = (options.minRadius || 4);
+        me.maxRadius = (options.maxRadius || 16);
         me.skipTransitions = options.skipTransitions;
         me.setLimits();
 
@@ -264,7 +266,7 @@ class Scatter extends Widget {
     scaleRangeSizeSetup () {
         var me = this;
 
-        me.rScale.range([4, 16]);
+        me.rScale.range([me.minRadius, me.maxRadius]);
     }
 
     scaleRangeFillSetup () {
