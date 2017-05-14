@@ -121,10 +121,12 @@ class Scatter extends Widget {
             .direction('w')
             .offset([0, -10])
             .html(function (d) {
+                var fKey = (me.categorical ? me.fKeyCategorical : me.fKeyContinuous);
                 return '<table>' +
-                    '<tr><td>' + me.xKey + '</td><td>' + d[me.xKey] + '</td></tr>' +
-                    '<tr><td>' + me.yKey + '</td><td>' + d[me.yKey] + '</td></tr>' +
-                    '<tr><td>' + me.fKeyCategorical + '</td><td>' + d[me.fKeyCategorical] + '</td></tr>' +
+                    '<tr><td>' + me.xKey + ' (x)</td><td>' + d[me.xKey] + '</td></tr>' +
+                    '<tr><td>' + me.yKey + ' (y)</td><td>' + d[me.yKey] + '</td></tr>' +
+                    '<tr><td>' + me.rKey + ' (size)</td><td>' + d[me.rKey] + '</td></tr>' +
+                    '<tr><td>' + fKey + ' (color)</td><td>' + d[fKey] + '</td></tr>' +
                     '</table>';
             });
 
