@@ -162,7 +162,7 @@ class Scatter extends Widget {
         } else {
             me.points.selection
                 .transition()
-                .duration(me.options.ANIM_DURATION)
+                .duration(me.points.attrs.duration)
                 .attr('r', me.points.attrs.r)
                 .attr('fill', me.points.attrs.fill);
         }
