@@ -168,37 +168,72 @@ class Scatter extends Widget {
         }
     }
 
-    setLimits () {
+    setXLimits () {
         var me = this;
 
         me.xMin = d3.min(me.data, function (d) { return d[me.xKey]; });
         me.xMax = d3.max(me.data, function (d) { return d[me.xKey]; });
+        me.xMid = me.xMin + 0.5 * (me.xMax - me.xMin);
+    }
+
+    setYLimits () {
+        var me = this;
+
         me.yMin = d3.min(me.data, function (d) { return d[me.yKey]; });
         me.yMax = d3.max(me.data, function (d) { return d[me.yKey]; });
+        me.yMid = me.yMin + 0.5 * (me.yMax - me.yMin);
+    }
+
+    setRLimits () {
+        var me = this;
+
         me.rMin = d3.min(me.data, function (d) { return d[me.rKey]; });
         me.rMax = d3.max(me.data, function (d) { return d[me.rKey]; });
+    }
 
-        me.xMid = me.xMin + 0.5 * (me.xMax - me.xMin);
-        me.yMid = me.yMin + 0.5 * (me.yMax - me.yMin);
+    setSMax () {
+        var me = this;
+
         me.sMax = d3.max(me.data, function (d) {
             var dx = d[me.xKey] - me.xMid;
             var dy = d[me.yKey] - me.yMid;
 
             return Math.sqrt(dx * dx + dy * dy);
         });
+    }
+
+    setFCategoricalDomain () {
+        var me = this;
+
+        me.fDomain = [];
+        for (var j = 0; j < me.data.length; j++) {
+            var value = me.data[j][me.fKeyCategorical];
+
+            if (!me.fDomain.includes(value)) {
+                me.fDomain.push(value);
+            }
+        }
+    }
+
+    setFContinuousLimits () {
+        var me = this;
+
+        me.fMin = d3.min(me.data, function (d) { return d[me.fKeyContinuous]; });
+        me.fMax = d3.max(me.data, function (d) { return d[me.fKeyContinuous]; });
+    }
+
+    setLimits () {
+        var me = this;
+
+        me.setXLimits();
+        me.setYLimits();
+        me.setRLimits();
+        me.setSMax();
 
         if (me.categorical) {
-            me.fDomain = [];
-            for (var j = 0; j < me.data.length; j++) {
-                var value = me.data[j][me.fKeyCategorical];
-
-                if (!me.fDomain.includes(value)) {
-                    me.fDomain.push(value);
-                }
-            }
+            me.setFCategoricalDomain();
         } else {
-            me.fMin = d3.min(me.data, function (d) { return d[me.fKeyContinuous]; });
-            me.fMax = d3.max(me.data, function (d) { return d[me.fKeyContinuous]; });
+            me.setFContinuousLimits();
         }
     }
 
@@ -321,14 +356,7 @@ class Scatter extends Widget {
         me.scaleRangeFillSetup();
 
         // visual updates
-        if (me.skipTransitions) {
-            me.points.updateVis('fill');
-        } else {
-            me.points.selection
-                .transition()
-                .duration(me.points.attrs.duration)
-                .attr('fill', me.points.attrs.fill);
-        }
+        me.updateVisAttr('fill');
     }
 
     updateColorScaling (categorical) {
@@ -340,13 +368,103 @@ class Scatter extends Widget {
         me.scaleDomainFillSetup();
 
         // visual updates
+        me.updateVisAttr('fill');
+    }
+
+    updateXKey (xKey) {
+        var me = this;
+        me.xKey = (xKey ? xKey : me.xKey);
+        me.setXLimits();
+        me.setSMax();
+
+        // scale updates
+        me.scaleDomainsHorizontalSetup();
+
+        // visual updates
+        me.updateVisAttr('cx');
+    }
+
+    updateYKey (yKey) {
+        var me = this;
+        me.yKey = (yKey ? yKey : me.yKey);
+        me.setYLimits();
+        me.setSMax();
+
+        // scale updates
+        me.scaleDomainsVerticalSetup();
+
+        // visual updates
+        me.updateVisAttr('cy');
+    }
+
+    updateRKey (rKey) {
+        var me = this;
+        me.rKey = (rKey ? rKey : me.rKey);
+        me.setRLimits();
+
+        // scale updates
+        me.scaleDomainsSizeSetup();
+
+        // visual updates
+        me.updateVisAttr('r');
+    }
+
+    updateFKeyCategorical (fKeyCategorical) {
+        var me = this;
+        me.fKeyCategorical = (fKeyCategorical ? fKeyCategorical : me.fKeyCategorical);
+        if (me.categorical) {
+            me.setFCategoricalDomain();
+        }
+
+        // scale updates
+        me.scaleDomainFillSetup();
+
+        // visual updates
+        me.updateVisAttr('fill');
+    }
+
+    updateFKeyContinuous (fKeyContinuous) {
+        var me = this;
+        me.fKeyContinuous = (fKeyContinuous ? fKeyContinuous : me.fKeyContinuous);
+        if (!me.categorical) {
+            me.setFContinuousLimits();
+        }
+
+        // scale updates
+        me.scaleDomainFillSetup();
+
+        // visual updates
+        me.updateVisAttr('fill');
+    }
+
+    updateVisAttr (attribute) {
+        var me = this;
+
         if (me.skipTransitions) {
-            me.points.updateVis('fill');
+
+            // update axis if necessary
+            if (attribute === 'cx') {
+                me.xAxis.updateVis();
+            } else if (attribute === 'cy') {
+                me.yAxis.updateVis();
+            }
+
+            // update attribute
+            me.points.updateVis(attribute);
         } else {
+
+            // update axis if necessary
+            if (attribute === 'cx') {
+                me.xAxis.updateVis(me.options.ANIM_DURATION);
+            } else if (attribute === 'cy') {
+                me.yAxis.updateVis(me.options.ANIM_DURATION);
+            }
+
+            // update attribute
             me.points.selection
                 .transition()
                 .duration(me.points.attrs.duration)
-                .attr('fill', me.points.attrs.fill);
+                .attr(attribute, me.points.attrs[attribute]);
         }
     }
 
@@ -373,40 +491,6 @@ class Scatter extends Widget {
             me.yAxis.updateVis(me.options.ANIM_DURATION);
             me.points.selection
                 .data(me.data, me.key)
-                .transition()
-                .duration(me.points.attrs.duration)
-                .attr('cx', me.points.attrs.cx)
-                .attr('cy', me.points.attrs.cy)
-                .attr('r', me.points.attrs.r)
-                .attr('fill', me.points.attrs.fill);
-        }
-    }
-
-    updateKeys (xKey, yKey, rKey, fKeyCategorical, fKeyContinuous) {
-        var me = this;
-        me.xKey = (xKey ? xKey : me.xKey);
-        me.yKey = (yKey ? yKey : me.yKey);
-        me.rKey = (rKey ? rKey : me.rKey);
-        me.fKeyCategorical = (fKeyCategorical ? fKeyCategorical : me.fKeyCategorical);
-        me.fKeyContinuous = (fKeyContinuous ? fKeyContinuous : me.fKeyContinuous);
-        me.setLimits();
-
-        // scale updates
-        me.scaleDomainsSetup();
-
-        // visual updates
-        if (me.skipTransitions) {
-            me.xAxis.updateVis();
-            me.yAxis.updateVis();
-            me.points.selection
-                .attr('cx', me.points.attrs.cx)
-                .attr('cy', me.points.attrs.cy)
-                .attr('r', me.points.attrs.r)
-                .attr('fill', me.points.attrs.fill);
-        } else {
-            me.xAxis.updateVis(me.options.ANIM_DURATION);
-            me.yAxis.updateVis(me.options.ANIM_DURATION);
-            me.points.selection
                 .transition()
                 .duration(me.points.attrs.duration)
                 .attr('cx', me.points.attrs.cx)
