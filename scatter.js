@@ -140,17 +140,7 @@ class Scatter extends Widget {
         me.container.svg
             .call(me.tooltip);
 
-        me.points.selection
-            .on('mouseover', function (d) {
-                d3.select(this)
-                    .style('opacity', 1);
-                me.tooltip.show(d);
-            })
-            .on('mouseout', function (d) {
-                d3.select(this)
-                    .style('opacity', 0.25);
-                me.tooltip.hide();
-            })
+        me.attachPointEventListeners();
 
         me.setMargins();
         me.setAnchors();
@@ -343,6 +333,22 @@ class Scatter extends Widget {
         me.points.updateVis('cx', 'cy');
         me.axisX.updateVis();
         me.axisY.updateVis();
+    }
+
+    attachPointEventListeners () {
+        var me = this;
+
+        me.points.selection
+            .on('mouseover', function (d) {
+                d3.select(this)
+                    .style('opacity', 1);
+                me.tooltip.show(d);
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                    .style('opacity', 0.25);
+                me.tooltip.hide();
+            });
     }
 
     resize (height) {
@@ -546,5 +552,7 @@ class Scatter extends Widget {
                 .selectAll('circle.keep')
                 .classed('keep', false);
         }
+
+        me.attachPointEventListeners();
     }
 }
