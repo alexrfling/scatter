@@ -72,9 +72,9 @@ class Scatter extends Widget {
             (options.height || me.options.DEFAULT_HEIGHT)
         );
 
-        me.xScale = d3.scaleLinear();
-        me.yScale = d3.scaleLinear();
-        me.rScale = d3.scaleLinear();
+        me.scaleX = d3.scaleLinear();
+        me.scaleY = d3.scaleLinear();
+        me.scaleR = d3.scaleLinear();
         me.scaleFillCategorical = d3.scaleOrdinal();
         me.scaleFillContinuous = d3.scaleQuantize();
 
@@ -82,32 +82,32 @@ class Scatter extends Widget {
         me.setScaleDomains();
         me.setScaleRanges();
 
-        me.xAxis = new Axis(
+        me.axisX = new Axis(
             me.container.svg,
             'axis',
-            me.xScale,
+            me.scaleX,
             me.options.FONT_SIZE,
             'bottom'
         );
-        me.yAxis = new Axis(
+        me.axisY = new Axis(
             me.container.svg,
             'axis',
-            me.yScale,
+            me.scaleY,
             me.options.FONT_SIZE,
             'left'
         );
 
-        me.xAxis.axis.tickFormat(d3.format('.1'));
-        me.yAxis.axis.tickFormat(d3.format('.1'));
+        me.axisX.axis.tickFormat(d3.format('.1'));
+        me.axisY.axis.tickFormat(d3.format('.1'));
 
         me.points = new ElementCollection(
             me.container.svg,
             'points',
             'circle',
             {
-                cx: function (d) { return me.xScale(d[me.xKey]); },
-                cy: function (d) { return me.yScale(d[me.yKey]); },
-                r: function (d) { return me.rScale(d[me.rKey]); },
+                cx: function (d) { return me.scaleX(d[me.xKey]); },
+                cy: function (d) { return me.scaleY(d[me.yKey]); },
+                r: function (d) { return me.scaleR(d[me.rKey]); },
                 fill: function (d) { return (me.categorical ? me.scaleFillCategorical(d[me.fKeyCategorical]) : me.scaleFillContinuous(d[me.fKeyContinuous])); },
                 duration: function (d) {
                     var dx = d[me.xKey] - me.xMid;
@@ -157,8 +157,8 @@ class Scatter extends Widget {
         me.setScaleRangesPositional();
         me.positionAllElements();
 
-        me.xAxis.updateVis();
-        me.yAxis.updateVis();
+        me.axisX.updateVis();
+        me.axisY.updateVis();
 
         me.points.selection
             .attr('cx', me.points.attrs.cx)
@@ -260,26 +260,26 @@ class Scatter extends Widget {
         var me = this;
 
         me.points.anchor = [me.marginXLabel, me.options.PADDING];
-        me.xAxis.anchor = [me.marginXLabel, me.container.svgHeight - me.marginYLabel];
-        me.yAxis.anchor = [me.marginXLabel, me.options.PADDING];
+        me.axisX.anchor = [me.marginXLabel, me.container.svgHeight - me.marginYLabel];
+        me.axisY.anchor = [me.marginXLabel, me.options.PADDING];
     }
 
     setScaleDomainsHorizontal () {
         var me = this;
 
-        me.xScale.domain([me.xMin, me.xMax]);
+        me.scaleX.domain([me.xMin, me.xMax]);
     }
 
     setScaleDomainsVertical () {
         var me = this;
 
-        me.yScale.domain([me.yMin, me.yMax]);
+        me.scaleY.domain([me.yMin, me.yMax]);
     }
 
     setScaleDomainsSize () {
         var me = this;
 
-        me.rScale.domain([me.rMin, me.rMax]);
+        me.scaleR.domain([me.rMin, me.rMax]);
     }
 
     setScaleDomainsFill () {
@@ -304,14 +304,14 @@ class Scatter extends Widget {
     setScaleRangesPositional () {
         var me = this;
 
-        me.xScale.range([0, me.container.svgWidth - me.marginXLabel - me.options.PADDING]);
-        me.yScale.range([me.container.svgHeight - me.marginYLabel - me.options.PADDING, 0]);
+        me.scaleX.range([0, me.container.svgWidth - me.marginXLabel - me.options.PADDING]);
+        me.scaleY.range([me.container.svgHeight - me.marginYLabel - me.options.PADDING, 0]);
     }
 
     setScaleRangesSize () {
         var me = this;
 
-        me.rScale.range([me.minRadius, me.maxRadius]);
+        me.scaleR.range([me.minRadius, me.maxRadius]);
     }
 
     setScaleRangesFill () {
@@ -333,16 +333,16 @@ class Scatter extends Widget {
         var me = this;
 
         me.points.position();
-        me.xAxis.position();
-        me.yAxis.position();
+        me.axisX.position();
+        me.axisY.position();
     }
 
     updateVisAllElements () {
         var me = this;
 
         me.points.updateVis('cx', 'cy');
-        me.xAxis.updateVis();
-        me.yAxis.updateVis();
+        me.axisX.updateVis();
+        me.axisY.updateVis();
     }
 
     resize (height) {
@@ -454,9 +454,9 @@ class Scatter extends Widget {
 
             // update axis if necessary
             if (attribute === 'cx') {
-                me.xAxis.updateVis();
+                me.axisX.updateVis();
             } else if (attribute === 'cy') {
-                me.yAxis.updateVis();
+                me.axisY.updateVis();
             }
 
             // update attribute
@@ -465,9 +465,9 @@ class Scatter extends Widget {
 
             // update axis if necessary
             if (attribute === 'cx') {
-                me.xAxis.updateVis(me.options.ANIM_DURATION);
+                me.axisX.updateVis(me.options.ANIM_DURATION);
             } else if (attribute === 'cy') {
-                me.yAxis.updateVis(me.options.ANIM_DURATION);
+                me.axisY.updateVis(me.options.ANIM_DURATION);
             }
 
             // update attribute
@@ -488,8 +488,8 @@ class Scatter extends Widget {
 
         // visual updates
         if (me.skipTransitions) {
-            me.xAxis.updateVis();
-            me.yAxis.updateVis();
+            me.axisX.updateVis();
+            me.axisY.updateVis();
             me.points.selection
                 .data(me.data, me.key)
                 .attr('cx', me.points.attrs.cx)
@@ -497,8 +497,8 @@ class Scatter extends Widget {
                 .attr('r', me.points.attrs.r)
                 .attr('fill', me.points.attrs.fill);
         } else {
-            me.xAxis.updateVis(me.options.ANIM_DURATION);
-            me.yAxis.updateVis(me.options.ANIM_DURATION);
+            me.axisX.updateVis(me.options.ANIM_DURATION);
+            me.axisY.updateVis(me.options.ANIM_DURATION);
             me.points.selection
                 .data(me.data, me.key)
                 .transition()
