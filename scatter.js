@@ -56,6 +56,7 @@ class Scatter extends Widget {
         me.minRadius = (options.minRadius || 4);
         me.maxRadius = (options.maxRadius || 16);
         me.skipTransitions = options.skipTransitions;
+        me.scaleOverUnder = (options.scaleOverUnder || Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE));
         me.setLimits();
 
         // clear out DOM elements inside parent
@@ -96,6 +97,9 @@ class Scatter extends Widget {
             'left'
         );
 
+        me.xAxis.axis.tickFormat(d3.format('.1'));
+        me.yAxis.axis.tickFormat(d3.format('.1'));
+
         me.points = new ElementCollection(
             me.container.svg,
             'points',
@@ -108,6 +112,8 @@ class Scatter extends Widget {
                 duration: function (d) {
                     var dx = d[me.xKey] - me.xMid;
                     var dy = d[me.yKey] - me.yMid;
+                    dx = dx / me.scaleOverUnder;
+                    dy = dy / me.scaleOverUnder;
 
                     return 500 + Math.sqrt(dx * dx + dy * dy) / me.sMax * me.options.ANIM_DURATION;
                 }
@@ -199,6 +205,8 @@ class Scatter extends Widget {
         me.sMax = d3.max(me.data, function (d) {
             var dx = d[me.xKey] - me.xMid;
             var dy = d[me.yKey] - me.yMid;
+            dx = dx / me.scaleOverUnder;
+            dy = dy / me.scaleOverUnder;
 
             return Math.sqrt(dx * dx + dy * dy);
         });
@@ -242,7 +250,7 @@ class Scatter extends Widget {
     marginsSetup () {
         var me = this;
 
-        me.marginXLabel = 30;
+        me.marginXLabel = 40;
         me.marginYLabel = me.options.FONT_SIZE;
         me.marginXChart = me.container.svgWidth - me.marginXLabel;
         me.marginYChart = me.container.svgHeight - me.marginYLabel;
@@ -259,13 +267,13 @@ class Scatter extends Widget {
     scaleDomainsHorizontalSetup () {
         var me = this;
 
-        me.xScale.domain([me.xMin - 1, me.xMax + 1]);
+        me.xScale.domain([me.xMin, me.xMax]);
     }
 
     scaleDomainsVerticalSetup () {
         var me = this;
 
-        me.yScale.domain([me.yMin - 1, me.yMax + 1]);
+        me.yScale.domain([me.yMin, me.yMax]);
     }
 
     scaleDomainsSizeSetup () {

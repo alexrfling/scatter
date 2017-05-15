@@ -63,10 +63,12 @@
 	<script>
         function genData (size) {
             var arr = [];
-            var wMax = Math.floor(Math.random() * 256);
-            var xMax = Math.floor(Math.random() * 256);
-            var yMax = Math.floor(Math.random() * 256);
-            var zMax = Math.floor(Math.random() * 256);
+            var max = Number.MAX_VALUE;
+            var wMax = Math.floor(Math.random() * max);
+            var xMax = Math.floor(Math.random() * max);
+            var yMax = Math.floor(Math.random() * max);
+            var zMax = Math.floor(Math.random() * max);
+            var s = Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE);
 
             for (var j = 0; j < size; j++) {
                 var point = {
@@ -78,8 +80,11 @@
                     label: (Math.random() < 0.5 ? 'yes' : 'no')
                 };
 
-                point.xy = Math.sqrt(point.x * point.x + point.y * point.y);
-                point.zz = (2 + 8 * Math.random()) * point.z + (Math.random() - 0.5) * zMax
+                var x = point.x / s;
+                var y = point.y / s;
+
+                point.xy = Math.sqrt(x * x + y * y);
+                point.zz = 0.0625 * Math.random() * max - (0.125 + 0.25 * Math.random()) * point.z;
 
                 arr.push(point);
             }
