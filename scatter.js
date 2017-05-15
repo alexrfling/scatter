@@ -478,9 +478,14 @@ class Scatter extends Widget {
         }
     }
 
-    updateData (data) {
+    updateData (data, xKey, yKey, rKey, fKeyCategorical, fKeyContinuous) {
         var me = this;
         me.data = data;
+        me.xKey = (xKey ? xKey : me.xKey);
+        me.yKey = (yKey ? yKey : me.yKey);
+        me.rKey = (rKey ? rKey : me.rKey);
+        me.fKeyCategorical = (fKeyCategorical ? fKeyCategorical : me.fKeyCategorical);
+        me.fKeyContinuous = (fKeyContinuous ? fKeyContinuous : me.fKeyContinuous);
         me.setLimits();
 
         // scale updates
@@ -490,23 +495,56 @@ class Scatter extends Widget {
         if (me.skipTransitions) {
             me.axisX.updateVis();
             me.axisY.updateVis();
+            me.points.updateData(me.data, me.key);
+            me.points.updateVis('cx', 'cy', 'r', 'fill');
             me.points.selection
-                .data(me.data, me.key)
-                .attr('cx', me.points.attrs.cx)
-                .attr('cy', me.points.attrs.cy)
-                .attr('r', me.points.attrs.r)
-                .attr('fill', me.points.attrs.fill);
+                .style('opacity', 0.25);
         } else {
             me.axisX.updateVis(me.options.ANIM_DURATION);
             me.axisY.updateVis(me.options.ANIM_DURATION);
-            me.points.selection
+
+            // add temporary classes to separate old bars from bars to be kept
+            me.points.group
+                .selectAll('circle')
                 .data(me.data, me.key)
+                .exit()
+                .attr('class', 'remove');
+            me.points.group
+                .selectAll('circle')
+                .filter(function () { return (this.className.baseVal !== 'remove'); })
+                .attr('class', 'keep');
+
+            // add new points, invisible, with same class as points to be kept
+            me.points.group
+                .selectAll('circle')
+                .data(me.data, me.key)
+                .enter()
+                .append('circle')
+                .attr('class', 'keep')
+                .attr('cx', me.points.attrs.cx)
+                .attr('cy', me.points.attrs.cy)
+                .style('opacity', 0.25);
+
+            // transition all points (old points removed)
+            me.points.group
+                .selectAll('circle.remove')
+                .transition()
+                .duration(me.points.attrs.duration)
+                .attr('r', 0)
+                .remove();
+            me.points.group
+                .selectAll('circle.keep')
                 .transition()
                 .duration(me.points.attrs.duration)
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
                 .attr('r', me.points.attrs.r)
                 .attr('fill', me.points.attrs.fill);
+
+            // update point selection
+            me.points.selection = me.points.group
+                .selectAll('circle.keep')
+                .classed('keep', false);
         }
     }
 }
