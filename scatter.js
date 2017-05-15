@@ -79,8 +79,8 @@ class Scatter extends Widget {
         me.scaleFillContinuous = d3.scaleQuantize();
 
         // initalize scales
-        me.scaleDomainsSetup();
-        me.scaleRangesSetup();
+        me.setScaleDomains();
+        me.setScaleRanges();
 
         me.xAxis = new Axis(
             me.container.svg,
@@ -152,9 +152,9 @@ class Scatter extends Widget {
                 me.tooltip.hide();
             })
 
-        me.marginsSetup();
-        me.anchorsSetup();
-        me.scaleRangesPositionalSetup();
+        me.setMargins();
+        me.setAnchors();
+        me.setScaleRangesPositional();
         me.positionAllElements();
 
         me.xAxis.updateVis();
@@ -247,7 +247,7 @@ class Scatter extends Widget {
         }
     }
 
-    marginsSetup () {
+    setMargins () {
         var me = this;
 
         me.marginXLabel = 40;
@@ -256,7 +256,7 @@ class Scatter extends Widget {
         me.marginYChart = me.container.svgHeight - me.marginYLabel;
     }
 
-    anchorsSetup () {
+    setAnchors () {
         var me = this;
 
         me.points.anchor = [me.marginXLabel, me.options.PADDING];
@@ -264,25 +264,25 @@ class Scatter extends Widget {
         me.yAxis.anchor = [me.marginXLabel, me.options.PADDING];
     }
 
-    scaleDomainsHorizontalSetup () {
+    setScaleDomainsHorizontal () {
         var me = this;
 
         me.xScale.domain([me.xMin, me.xMax]);
     }
 
-    scaleDomainsVerticalSetup () {
+    setScaleDomainsVertical () {
         var me = this;
 
         me.yScale.domain([me.yMin, me.yMax]);
     }
 
-    scaleDomainsSizeSetup () {
+    setScaleDomainsSize () {
         var me = this;
 
         me.rScale.domain([me.rMin, me.rMax]);
     }
 
-    scaleDomainFillSetup () {
+    setScaleDomainsFill () {
         var me = this;
 
         if (me.categorical) {
@@ -292,41 +292,41 @@ class Scatter extends Widget {
         }
     }
 
-    scaleDomainsSetup () {
+    setScaleDomains () {
         var me = this;
 
-        me.scaleDomainsHorizontalSetup();
-        me.scaleDomainsVerticalSetup();
-        me.scaleDomainsSizeSetup();
-        me.scaleDomainFillSetup();
+        me.setScaleDomainsHorizontal();
+        me.setScaleDomainsVertical();
+        me.setScaleDomainsSize();
+        me.setScaleDomainsFill();
     }
 
-    scaleRangesPositionalSetup () {
+    setScaleRangesPositional () {
         var me = this;
 
         me.xScale.range([0, me.container.svgWidth - me.marginXLabel - me.options.PADDING]);
         me.yScale.range([me.container.svgHeight - me.marginYLabel - me.options.PADDING, 0]);
     }
 
-    scaleRangeSizeSetup () {
+    setScaleRangesSize () {
         var me = this;
 
         me.rScale.range([me.minRadius, me.maxRadius]);
     }
 
-    scaleRangeFillSetup () {
+    setScaleRangesFill () {
         var me = this;
 
         me.scaleFillCategorical.range(me.colorsCategorical);
         me.scaleFillContinuous.range(me.colorsContinuous);
     }
 
-    scaleRangesSetup () {
+    setScaleRanges () {
         var me = this;
 
-        me.scaleRangesPositionalSetup();
-        me.scaleRangeFillSetup();
-        me.scaleRangeSizeSetup();
+        me.setScaleRangesPositional();
+        me.setScaleRangesFill();
+        me.setScaleRangesSize();
     }
 
     positionAllElements () {
@@ -349,9 +349,9 @@ class Scatter extends Widget {
         var me = this;
         me.container.resize(height);
 
-        me.marginsSetup();
-        me.anchorsSetup();
-        me.scaleRangesPositionalSetup();
+        me.setMargins();
+        me.setAnchors();
+        me.setScaleRangesPositional();
         me.positionAllElements();
         me.updateVisAllElements();
     }
@@ -363,7 +363,7 @@ class Scatter extends Widget {
         me.colorsContinuous = me.interpolateColors(me.loColor, 'lightgrey', me.hiColor, 256);
 
         // scale updates
-        me.scaleRangeFillSetup();
+        me.setScaleRangesFill();
 
         // visual updates
         me.updateVisAttr('fill');
@@ -375,7 +375,7 @@ class Scatter extends Widget {
         me.setLimits();
 
         // scale updates
-        me.scaleDomainFillSetup();
+        me.setScaleDomainsFill();
 
         // visual updates
         me.updateVisAttr('fill');
@@ -388,7 +388,7 @@ class Scatter extends Widget {
         me.setSMax();
 
         // scale updates
-        me.scaleDomainsHorizontalSetup();
+        me.setScaleDomainsHorizontal();
 
         // visual updates
         me.updateVisAttr('cx');
@@ -401,7 +401,7 @@ class Scatter extends Widget {
         me.setSMax();
 
         // scale updates
-        me.scaleDomainsVerticalSetup();
+        me.setScaleDomainsVertical();
 
         // visual updates
         me.updateVisAttr('cy');
@@ -413,7 +413,7 @@ class Scatter extends Widget {
         me.setRLimits();
 
         // scale updates
-        me.scaleDomainsSizeSetup();
+        me.setScaleDomainsSize();
 
         // visual updates
         me.updateVisAttr('r');
@@ -427,7 +427,7 @@ class Scatter extends Widget {
         }
 
         // scale updates
-        me.scaleDomainFillSetup();
+        me.setScaleDomainsFill();
 
         // visual updates
         me.updateVisAttr('fill');
@@ -441,7 +441,7 @@ class Scatter extends Widget {
         }
 
         // scale updates
-        me.scaleDomainFillSetup();
+        me.setScaleDomainsFill();
 
         // visual updates
         me.updateVisAttr('fill');
@@ -484,7 +484,7 @@ class Scatter extends Widget {
         me.setLimits();
 
         // scale updates
-        me.scaleDomainsSetup();
+        me.setScaleDomains();
 
         // visual updates
         if (me.skipTransitions) {
