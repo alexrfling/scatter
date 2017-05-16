@@ -56,6 +56,7 @@ class Scatter extends Widget {
         me.minRadius = (options.minRadius || 4);
         me.maxRadius = (options.maxRadius || 16);
         me.skipTransitions = options.skipTransitions;
+        me.tooltipFormat = (options.tooltipFormat || d3.format('.7'));
         me.scaleOverUnder = (options.scaleOverUnder || Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE));
         me.setLimits();
 
@@ -128,11 +129,13 @@ class Scatter extends Widget {
             .offset([0, -10])
             .html(function (d) {
                 var fKey = (me.categorical ? me.fKeyCategorical : me.fKeyContinuous);
+                var fVal = (typeof d[fKey] === 'number' ? me.tooltipFormat(d[fKey]) : d[fKey]);
+
                 return '<table>' +
-                    '<tr><td>' + me.xKey + ' (x)</td><td>' + d[me.xKey] + '</td></tr>' +
-                    '<tr><td>' + me.yKey + ' (y)</td><td>' + d[me.yKey] + '</td></tr>' +
-                    '<tr><td>' + me.rKey + ' (size)</td><td>' + d[me.rKey] + '</td></tr>' +
-                    '<tr><td>' + fKey + ' (color)</td><td>' + d[fKey] + '</td></tr>' +
+                    '<tr><td>' + me.xKey + ' (x)</td><td>' + me.tooltipFormat(d[me.xKey]) + '</td></tr>' +
+                    '<tr><td>' + me.yKey + ' (y)</td><td>' + me.tooltipFormat(d[me.yKey]) + '</td></tr>' +
+                    '<tr><td>' + me.rKey + ' (size)</td><td>' + me.tooltipFormat(d[me.rKey]) + '</td></tr>' +
+                    '<tr><td>' + fKey + ' (color)</td><td>' + fVal + '</td></tr>' +
                     '</table>';
             });
 

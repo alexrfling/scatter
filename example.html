@@ -13,7 +13,7 @@
 	<link rel='stylesheet' type='text/css' href='d3-helpers/widget.css'>
 </head>
 <body>
-    <button onclick='scatter.updateData(genData(Math.random() * 1000));'>update</button>
+    <button onclick='scatter.updateData(genData(Math.random() * 1024));'>update</button>
     <select onchange='scatter.updateXKey(this.value);'>
 		<option value='w'>w</option>
 		<option value='x' selected>x</option>
@@ -93,7 +93,7 @@
         }
 
 		var scatter = new Scatter('parent');
-        var data = genData(1000);
+        var data = genData(Math.random() * 1024);
 		var options = {
             colors: {
                 yes: '#109618',
