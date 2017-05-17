@@ -88,18 +88,21 @@ class Scatter extends Widget {
             'axis',
             me.scaleX,
             me.options.FONT_SIZE,
-            'bottom'
+            'bottom',
+            {
+                tickFormat: d3.format('.1')
+            }
         );
         me.axisY = new Axis(
             me.container.svg,
             'axis',
             me.scaleY,
             me.options.FONT_SIZE,
-            'left'
+            'left',
+            {
+                tickFormat: d3.format('.1')
+            }
         );
-
-        me.axisX.axis.tickFormat(d3.format('.1'));
-        me.axisY.axis.tickFormat(d3.format('.1'));
 
         me.points = new ElementCollection(
             me.container.svg,
