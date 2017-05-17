@@ -55,7 +55,7 @@ class Scatter extends Widget {
         me.categorical = options.categorical;
         me.minRadius = (options.minRadius || 4);
         me.maxRadius = (options.maxRadius || 16);
-        me.skipTransitions = options.skipTransitions;
+        me.noTransition = options.noTransition;
         me.tooltipFormat = (options.tooltipFormat || d3.format('.7'));
         me.scaleOverUnder = (options.scaleOverUnder || Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE));
         me.setLimits();
@@ -161,7 +161,7 @@ class Scatter extends Widget {
             .attr('cy', me.points.attrs.cy)
             .style('opacity', 0.25);
 
-        if (me.skipTransitions) {
+        if (me.noTransition) {
             me.points.updateVis('r', 'fill');
         } else {
             me.points.selection
@@ -462,7 +462,7 @@ class Scatter extends Widget {
     updateVisAttr (attribute) {
         var me = this;
 
-        if (me.skipTransitions) {
+        if (me.noTransition) {
 
             // update axis if necessary
             if (attribute === 'cx') {
@@ -504,7 +504,7 @@ class Scatter extends Widget {
         me.setScaleDomains();
 
         // visual updates
-        if (me.skipTransitions) {
+        if (me.noTransition) {
             me.axisX.updateVis();
             me.axisY.updateVis();
             me.points.updateData(me.data, me.key);
