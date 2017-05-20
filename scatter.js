@@ -144,14 +144,20 @@ class Scatter extends Widget {
             .offset([0, -10])
             .html(function (d) {
                 var fKey = (me.categorical ? me.fKeyCategorical : me.fKeyContinuous);
-                var fVal = (typeof d[fKey] === 'number' ? me.tooltipFormat(d[fKey]) : d[fKey]);
+                var html = '<table>'
+                    + '<tr><td>' + me.xKey + ' (x)</td><td>' + me.tooltipFormat(d[me.xKey]) + '</td></tr>'
+                    + '<tr><td>' + me.yKey + ' (y)</td><td>' + me.tooltipFormat(d[me.yKey]) + '</td></tr>';
 
-                return '<table>' +
-                    '<tr><td>' + me.xKey + ' (x)</td><td>' + me.tooltipFormat(d[me.xKey]) + '</td></tr>' +
-                    '<tr><td>' + me.yKey + ' (y)</td><td>' + me.tooltipFormat(d[me.yKey]) + '</td></tr>' +
-                    '<tr><td>' + me.rKey + ' (size)</td><td>' + me.tooltipFormat(d[me.rKey]) + '</td></tr>' +
-                    '<tr><td>' + fKey + ' (color)</td><td>' + fVal + '</td></tr>' +
-                    '</table>';
+                if (me.rKey) {
+                    html += '<tr><td>' + me.rKey + ' (size)</td><td>' + me.tooltipFormat(d[me.rKey]) + '</td></tr>';
+                }
+
+                if (fKey) {
+                    var fVal = (typeof d[fKey] === 'number' ? me.tooltipFormat(d[fKey]) : d[fKey]);
+                    html += '<tr><td>' + fKey + ' (color)</td><td>' + fVal + '</td></tr>';
+                }
+
+                return html + '</table>';
             });
 
         // invoke tooltip
