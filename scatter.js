@@ -50,11 +50,15 @@ class Scatter extends Widget {
             '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac'
         ]);
         me.loColor = (options.loColor || '#3366cc');
+        me.mdColor = (options.mdColor || 'lightgrey');
         me.hiColor = (options.hiColor || '#109618');
-        me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, 'lightgrey', me.hiColor, 256));
+        me.defaultColor = (options.defaultColor || 'black');
+        me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, me.mdColor, me.hiColor, 256));
         me.categorical = options.categorical;
         me.minRadius = (options.minRadius || 4);
         me.maxRadius = (options.maxRadius || 16);
+        me.defaultRadius = (options.defaultRadius || 8);
+        me.defaultOpacity = (options.defaultOpacity || 0.25);
         me.noTransition = options.noTransition;
         me.tooltipFormat = (options.tooltipFormat || d3.format('.7'));
         me.scaleOverUnder = (options.scaleOverUnder || Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE));
@@ -111,8 +115,16 @@ class Scatter extends Widget {
             {
                 cx: function (d) { return me.scaleX(d[me.xKey]); },
                 cy: function (d) { return me.scaleY(d[me.yKey]); },
-                r: function (d) { return me.scaleR(d[me.rKey]); },
-                fill: function (d) { return (me.categorical ? me.scaleFillCategorical(d[me.fKeyCategorical]) : me.scaleFillContinuous(d[me.fKeyContinuous])); },
+                r: function (d) { return (me.rKey ? me.scaleR(d[me.rKey]) : me.defaultRadius); },
+                fill: function (d) {
+                    if (me.categorical && me.fKeyCategorical) {
+                        return me.scaleFillCategorical(d[me.fKeyCategorical]);
+                    } else if (!me.categorical && me.fKeyContinuous) {
+                        return me.scaleFillContinuous(d[me.fKeyContinuous]);
+                    }
+
+                    return me.defaultColor;
+                },
                 duration: function (d) {
                     var dx = d[me.xKey] - me.xMid;
                     var dy = d[me.yKey] - me.yMid;
@@ -159,7 +171,7 @@ class Scatter extends Widget {
         me.points.selection
             .attr('cx', me.points.attrs.cx)
             .attr('cy', me.points.attrs.cy)
-            .style('opacity', 0.25);
+            .style('opacity', me.defaultOpacity);
 
         if (me.noTransition) {
             me.points.updateVis('r', 'fill');
@@ -191,6 +203,10 @@ class Scatter extends Widget {
     setRLimits () {
         var me = this;
 
+        if (!me.rKey) {
+            return;
+        }
+
         me.rMin = d3.min(me.data, function (d) { return d[me.rKey]; });
         me.rMax = d3.max(me.data, function (d) { return d[me.rKey]; });
     }
@@ -211,6 +227,10 @@ class Scatter extends Widget {
     setFCategoricalDomain () {
         var me = this;
 
+        if (!me.fKeyCategorical) {
+            return;
+        }
+
         me.fDomain = [];
         for (var j = 0; j < me.data.length; j++) {
             var value = me.data[j][me.fKeyCategorical];
@@ -223,6 +243,10 @@ class Scatter extends Widget {
 
     setFContinuousLimits () {
         var me = this;
+
+        if (!me.fKeyContinuous) {
+            return;
+        }
 
         me.fMin = d3.min(me.data, function (d) { return d[me.fKeyContinuous]; });
         me.fMax = d3.max(me.data, function (d) { return d[me.fKeyContinuous]; });
@@ -352,7 +376,7 @@ class Scatter extends Widget {
             })
             .on('mouseout', function (d) {
                 d3.select(this)
-                    .style('opacity', 0.25);
+                    .style('opacity', me.defaultOpacity);
                 me.tooltip.hide();
             });
     }
@@ -421,7 +445,7 @@ class Scatter extends Widget {
 
     updateRKey (rKey) {
         var me = this;
-        me.rKey = (rKey ? rKey : me.rKey);
+        me.rKey = rKey;
         me.setRLimits();
 
         // scale updates
@@ -433,7 +457,7 @@ class Scatter extends Widget {
 
     updateFKeyCategorical (fKeyCategorical) {
         var me = this;
-        me.fKeyCategorical = (fKeyCategorical ? fKeyCategorical : me.fKeyCategorical);
+        me.fKeyCategorical = fKeyCategorical;
         if (me.categorical) {
             me.setFCategoricalDomain();
         }
@@ -447,7 +471,7 @@ class Scatter extends Widget {
 
     updateFKeyContinuous (fKeyContinuous) {
         var me = this;
-        me.fKeyContinuous = (fKeyContinuous ? fKeyContinuous : me.fKeyContinuous);
+        me.fKeyContinuous = fKeyContinuous;
         if (!me.categorical) {
             me.setFContinuousLimits();
         }
@@ -510,7 +534,7 @@ class Scatter extends Widget {
             me.points.updateData(me.data, me.key);
             me.points.updateVis('cx', 'cy', 'r', 'fill');
             me.points.selection
-                .style('opacity', 0.25);
+                .style('opacity', me.defaultOpacity);
         } else {
             me.axisX.updateVis(me.options.ANIM_DURATION);
             me.axisY.updateVis(me.options.ANIM_DURATION);
@@ -535,7 +559,7 @@ class Scatter extends Widget {
                 .attr('class', 'keep')
                 .attr('cx', me.points.attrs.cx)
                 .attr('cy', me.points.attrs.cy)
-                .style('opacity', 0.25);
+                .style('opacity', me.defaultOpacity);
 
             // transition all points (old points removed)
             me.points.group

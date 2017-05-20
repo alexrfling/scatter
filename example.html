@@ -30,7 +30,8 @@
         <option value='xy'>xy</option>
         <option value='zz'>zz</option>
 	</select>
-    <select onchange='scatter.updateRKey(this.value);'>
+    <select onchange='scatter.updateRKey(this.value === "null" ? null : this.value);'>
+        <option value='null'>none</option>
 		<option value='w'>w</option>
 		<option value='x'>x</option>
 		<option value='y'>y</option>
@@ -38,7 +39,8 @@
         <option value='xy'>xy</option>
         <option value='zz'>zz</option>
 	</select>
-    <select onchange='scatter.updateFKeyCategorical(this.value);'>
+    <select onchange='scatter.updateFKeyCategorical(this.value === "null" ? null : this.value);'>
+        <option value='null'>none</option>
 		<option value='w'>w</option>
 		<option value='x'>x</option>
 		<option value='y'>y</option>
@@ -47,7 +49,8 @@
         <option value='zz'>zz</option>
         <option value='label' selected>label</option>
 	</select>
-    <select onchange='scatter.updateFKeyContinuous(this.value);'>
+    <select onchange='scatter.updateFKeyContinuous(this.value === "null" ? null : this.value);'>
+        <option value='null'>none</option>
 		<option value='w'>w</option>
 		<option value='x'>x</option>
 		<option value='y'>y</option>
