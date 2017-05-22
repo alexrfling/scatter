@@ -120,13 +120,17 @@ class Scatter extends Widget {
                 cy: function (d) { return me.scaleY(d[me.yKey]); },
                 r: function (d) { return (me.rKey ? me.scaleR(d[me.rKey]) : me.defaultRadius); },
                 fill: function (d) {
-                    if (me.categorical && me.fKeyCategorical) {
-                        return me.scaleFillCategorical(d[me.fKeyCategorical]);
-                    } else if (!me.categorical && me.fKeyContinuous) {
-                        return me.scaleFillContinuous(d[me.fKeyContinuous]);
+                    if (me.categorical) {
+                        if (me.fKeyCategorical) {
+                            return me.scaleFillCategorical(d[me.fKeyCategorical]);
+                        }
+                        return me.defaultColor;
+                    } else {
+                        if (me.fKeyContinuous) {
+                            return me.scaleFillContinuous(d[me.fKeyContinuous]);
+                        }
+                        return me.defaultColor;
                     }
-
-                    return me.defaultColor;
                 },
                 duration: function (d) {
                     var dx = d[me.xKey] - me.xMid;
