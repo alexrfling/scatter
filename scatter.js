@@ -330,9 +330,9 @@ class Scatter extends Widget {
     setScaleDomainsFill () {
         var me = this;
 
-        if (me.categorical) {
+        if (me.categorical && me.fKeyCategorical) {
             me.scaleFillCategorical.domain(me.fDomain);
-        } else {
+        } else if (me.fKeyContinuous) {
             me.scaleFillContinuous.domain([me.fMin, me.fMax]);
         }
     }
