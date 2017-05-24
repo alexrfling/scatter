@@ -50,7 +50,7 @@ class Scatter extends Widget {
             '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac'
         ]);
         me.loColor = (options.loColor || '#3366cc');
-        me.mdColor = (options.mdColor || 'lightgrey');
+        me.mdColor = (options.mdColor || 'darkgrey');
         me.hiColor = (options.hiColor || '#109618');
         me.defaultColor = (options.defaultColor || 'black');
         me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, me.mdColor, me.hiColor, 256));
