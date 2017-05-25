@@ -33,13 +33,13 @@ class Scatter extends Widget {
         });
     }
 
-    initialize (data, options) {
+    initialize (data, xKey, yKey, options) {
         var me = this;
         options = (options || {});
 
         me.data = data;
-        me.xKey = options.xKey;
-        me.yKey = options.yKey;
+        me.xKey = xKey;
+        me.yKey = yKey;
         me.rKey = options.rKey;
         me.fKeyCategorical = options.fKeyCategorical;
         me.fKeyContinuous = options.fKeyContinuous;
@@ -541,14 +541,17 @@ class Scatter extends Widget {
         }
     }
 
-    updateData (data, xKey, yKey, rKey, fKeyCategorical, fKeyContinuous) {
+    updateData (data, xKey, yKey, options) {
         var me = this;
+        options = (options || {});
+
         me.data = data;
         me.xKey = xKey;
         me.yKey = yKey;
-        me.rKey = rKey;
-        me.fKeyCategorical = fKeyCategorical;
-        me.fKeyContinuous = fKeyContinuous;
+        me.rKey = options.rKey;
+        me.fKeyCategorical = options.fKeyCategorical;
+        me.fKeyContinuous = options.fKeyContinuous;
+        me.noTransition = options.noTransition;
         me.setLimits();
 
         // scale updates

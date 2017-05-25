@@ -13,7 +13,7 @@
 	<link rel='stylesheet' type='text/css' href='d3-helpers/widget.css'>
 </head>
 <body>
-    <button onclick='scatter.updateData(genData(Math.random() * 1024), scatter.xKey, scatter.yKey, scatter.rKey, scatter.fKeyCategorical, scatter.fKeyContinuous);'>update</button>
+    <button onclick='scatter.updateData(genData(Math.random() * 1024), scatter.xKey, scatter.yKey, { rKey: scatter.rKey, fKeyCategorical: scatter.fKeyCategorical, fKeyContinuous: scatter.fKeyContinuous });'>update</button>
     <select onchange='scatter.updateXKey(this.value);'>
 		<option value='w'>w</option>
 		<option value='x' selected>x</option>
@@ -102,8 +102,6 @@
                 yes: '#109618',
                 no: '#3366cc'
             },
-            xKey: 'x',
-            yKey: 'y',
             rKey: 'z',
             fKeyCategorical: 'label',
             fKeyContinuous: 'zz',
@@ -111,7 +109,7 @@
 			height: 580
 		};
 
-		scatter.initialize(data, options);
+		scatter.initialize(data, 'x', 'y', options);
 	</script>
 </body>
 </html>
