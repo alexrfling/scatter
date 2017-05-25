@@ -13,7 +13,7 @@
 	<link rel='stylesheet' type='text/css' href='d3-helpers/widget.css'>
 </head>
 <body>
-    <button onclick='scatter.updateData(genData(Math.random() * 1024));'>update</button>
+    <button onclick='scatter.updateData(genData(Math.random() * 1024), scatter.xKey, scatter.yKey, scatter.rKey, scatter.fKeyCategorical, scatter.fKeyContinuous);'>update</button>
     <select onchange='scatter.updateXKey(this.value);'>
 		<option value='w'>w</option>
 		<option value='x' selected>x</option>

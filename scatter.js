@@ -544,11 +544,11 @@ class Scatter extends Widget {
     updateData (data, xKey, yKey, rKey, fKeyCategorical, fKeyContinuous) {
         var me = this;
         me.data = data;
-        me.xKey = (xKey ? xKey : me.xKey);
-        me.yKey = (yKey ? yKey : me.yKey);
-        me.rKey = (rKey ? rKey : me.rKey);
-        me.fKeyCategorical = (fKeyCategorical ? fKeyCategorical : me.fKeyCategorical);
-        me.fKeyContinuous = (fKeyContinuous ? fKeyContinuous : me.fKeyContinuous);
+        me.xKey = xKey;
+        me.yKey = yKey;
+        me.rKey = rKey;
+        me.fKeyCategorical = fKeyCategorical;
+        me.fKeyContinuous = fKeyContinuous;
         me.setLimits();
 
         // scale updates
