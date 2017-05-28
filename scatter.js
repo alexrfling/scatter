@@ -178,7 +178,7 @@ class Scatter extends Widget {
         me.setAnchors();
         me.setScaleDomainsPositional();
         me.setScaleRangesPositional();
-        me.positionAllElements();
+        me.positionElements();
 
         me.axisX.updateVis();
         me.axisY.updateVis();
@@ -376,7 +376,7 @@ class Scatter extends Widget {
         me.setScaleRangesSize();
     }
 
-    positionAllElements () {
+    positionElements () {
         var me = this;
 
         me.points.position();
@@ -384,7 +384,7 @@ class Scatter extends Widget {
         me.axisY.position();
     }
 
-    updateVisAllElements () {
+    updateVisElements () {
         var me = this;
 
         me.points.updateVis('cx', 'cy');
@@ -416,8 +416,8 @@ class Scatter extends Widget {
         me.setAnchors();
         me.setScaleDomainsPositional();
         me.setScaleRangesPositional();
-        me.positionAllElements();
-        me.updateVisAllElements();
+        me.positionElements();
+        me.updateVisElements();
     }
 
     updateColors(loColor, hiColor) {
