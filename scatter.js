@@ -420,7 +420,7 @@ class Scatter extends Widget {
         me.updateVisElements();
     }
 
-    updateColors(loColor, hiColor) {
+    updateColors (loColor, hiColor) {
         var me = this;
         me.loColor = (loColor ? loColor : me.loColor);
         me.hiColor = (hiColor ? hiColor : me.hiColor);
