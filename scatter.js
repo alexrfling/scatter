@@ -422,8 +422,8 @@ class Scatter extends Widget {
 
     updateColors (loColor, hiColor) {
         var me = this;
-        me.loColor = (loColor ? loColor : me.loColor);
-        me.hiColor = (hiColor ? hiColor : me.hiColor);
+        me.loColor = (loColor || me.loColor);
+        me.hiColor = (hiColor || me.hiColor);
         me.colorsContinuous = me.interpolateColors(me.loColor, 'lightgrey', me.hiColor, 256);
 
         // scale updates
@@ -447,7 +447,7 @@ class Scatter extends Widget {
 
     updateXKey (xKey) {
         var me = this;
-        me.xKey = (xKey ? xKey : me.xKey);
+        me.xKey = (xKey || me.xKey);
         me.setXLimits();
         me.setSMax();
 
@@ -460,7 +460,7 @@ class Scatter extends Widget {
 
     updateYKey (yKey) {
         var me = this;
-        me.yKey = (yKey ? yKey : me.yKey);
+        me.yKey = (yKey || me.yKey);
         me.setYLimits();
         me.setSMax();
 
