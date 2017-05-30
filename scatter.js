@@ -287,30 +287,28 @@ class Scatter extends Widget {
 
         me.marginXLabel = 40;
         me.marginYLabel = me.options.FONT_SIZE;
-        me.marginXChart = me.container.svgWidth - me.marginXLabel;
-        me.marginYChart = me.container.svgHeight - me.marginYLabel;
+        me.marginXChart = me.container.svgWidth - me.marginXLabel - me.options.PADDING;
+        me.marginYChart = me.container.svgHeight - me.marginYLabel - me.options.PADDING;
     }
 
     setAnchors () {
         var me = this;
 
         me.points.anchor = [me.marginXLabel, me.options.PADDING];
-        me.axisX.anchor = [me.marginXLabel, me.container.svgHeight - me.marginYLabel];
+        me.axisX.anchor = [me.marginXLabel, me.marginYChart + me.options.PADDING];
         me.axisY.anchor = [me.marginXLabel, me.options.PADDING];
     }
 
     setScaleDomainsHorizontal () {
         var me = this;
-        var rangeX = me.container.svgWidth - me.marginXLabel - me.options.PADDING;
-        var buffer = (1.0 * me.maxRadius / rangeX) * (me.xMax - me.xMin);
+        var buffer = (1.0 * me.maxRadius / me.marginXChart) * (me.xMax - me.xMin);
 
         me.scaleX.domain([me.xMin - buffer, me.xMax + buffer]);
     }
 
     setScaleDomainsVertical () {
         var me = this;
-        var rangeY = me.container.svgHeight - me.marginYLabel - me.options.PADDING;
-        var buffer = (1.0 * me.maxRadius / rangeY) * (me.yMax - me.yMin);
+        var buffer = (1.0 * me.maxRadius / me.marginYChart) * (me.yMax - me.yMin);
 
         me.scaleY.domain([me.yMin - buffer, me.yMax + buffer]);
     }
@@ -348,11 +346,9 @@ class Scatter extends Widget {
 
     setScaleRangesPositional () {
         var me = this;
-        var rangeX = me.container.svgWidth - me.marginXLabel - me.options.PADDING;
-        var rangeY = me.container.svgHeight - me.marginYLabel - me.options.PADDING;
 
-        me.scaleX.range([0, rangeX]);
-        me.scaleY.range([rangeY, 0]);
+        me.scaleX.range([0, me.marginXChart]);
+        me.scaleY.range([me.marginYChart, 0]);
     }
 
     setScaleRangesSize () {
