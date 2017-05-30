@@ -5,16 +5,16 @@
              |            |                                                    |
              |            |                                                    |
              |            |                                                    |
-marginYChart |            |                                                    |
+marginChartY |            |                                                    |
              |            |                                                    |
              |            |                                                    |
              |            |                                                    |
              |            |                                                    |
              |            |                                                    |
              +------------+----------------------------------------------------+
-marginYLabel |            |                                                    |
+marginLabelY |            |                                                    |
              +------------+----------------------------------------------------+
-              marginXLabel                      marginXChart
+              marginLabelX                      marginChartX
 */
 class Scatter extends Widget {
 
@@ -285,30 +285,30 @@ class Scatter extends Widget {
     setMargins () {
         var me = this;
 
-        me.marginXLabel = 40;
-        me.marginYLabel = me.options.FONT_SIZE;
-        me.marginXChart = me.container.svgWidth - me.marginXLabel - me.options.PADDING;
-        me.marginYChart = me.container.svgHeight - me.marginYLabel - me.options.PADDING;
+        me.marginLabelX = 40;
+        me.marginLabelY = me.options.FONT_SIZE;
+        me.marginChartX = me.container.svgWidth - me.marginLabelX - me.options.PADDING;
+        me.marginChartY = me.container.svgHeight - me.marginLabelY - me.options.PADDING;
     }
 
     setAnchors () {
         var me = this;
 
-        me.points.anchor = [me.marginXLabel, me.options.PADDING];
-        me.axisX.anchor = [me.marginXLabel, me.marginYChart + me.options.PADDING];
-        me.axisY.anchor = [me.marginXLabel, me.options.PADDING];
+        me.points.anchor = [me.marginLabelX, me.options.PADDING];
+        me.axisX.anchor = [me.marginLabelX, me.marginChartY + me.options.PADDING];
+        me.axisY.anchor = [me.marginLabelX, me.options.PADDING];
     }
 
     setScaleDomainsHorizontal () {
         var me = this;
-        var buffer = (1.0 * me.maxRadius / me.marginXChart) * (me.xMax - me.xMin);
+        var buffer = (1.0 * me.maxRadius / me.marginChartX) * (me.xMax - me.xMin);
 
         me.scaleX.domain([me.xMin - buffer, me.xMax + buffer]);
     }
 
     setScaleDomainsVertical () {
         var me = this;
-        var buffer = (1.0 * me.maxRadius / me.marginYChart) * (me.yMax - me.yMin);
+        var buffer = (1.0 * me.maxRadius / me.marginChartY) * (me.yMax - me.yMin);
 
         me.scaleY.domain([me.yMin - buffer, me.yMax + buffer]);
     }
@@ -347,8 +347,8 @@ class Scatter extends Widget {
     setScaleRangesPositional () {
         var me = this;
 
-        me.scaleX.range([0, me.marginXChart]);
-        me.scaleY.range([me.marginYChart, 0]);
+        me.scaleX.range([0, me.marginChartX]);
+        me.scaleY.range([me.marginChartY, 0]);
     }
 
     setScaleRangesSize () {
