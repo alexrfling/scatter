@@ -172,7 +172,7 @@ class Scatter extends Widget {
         me.container.svg
             .call(me.tooltip);
 
-        me.attachPointEventListeners();
+        me.bindEventListeners();
 
         me.setMargins();
         me.setAnchors();
@@ -392,7 +392,7 @@ class Scatter extends Widget {
         me.axisY.updateVis();
     }
 
-    attachPointEventListeners () {
+    bindEventListeners () {
         var me = this;
 
         me.points.selection
@@ -614,6 +614,6 @@ class Scatter extends Widget {
                 .classed('keep', false);
         }
 
-        me.attachPointEventListeners();
+        me.bindEventListeners();
     }
 }
