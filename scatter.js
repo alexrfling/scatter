@@ -416,11 +416,13 @@ class Scatter extends Widget {
         me.updateVisElements();
     }
 
-    updateColors (loColor, hiColor) {
+    updateColors (loColor, mdColor, hiColor, numColors) {
         var me = this;
         me.loColor = (loColor || me.loColor);
+        me.mdColor = (mdColor || me.mdColor);
         me.hiColor = (hiColor || me.hiColor);
-        me.colorsContinuous = me.interpolateColors(me.loColor, 'lightgrey', me.hiColor, 256);
+        me.numColors = (numColors || me.numColors);
+        me.colorsContinuous = me.interpolateColors(me.loColor, me.mdColor, me.hiColor, me.numColors);
 
         // scale updates
         me.setScaleRangesFill();
