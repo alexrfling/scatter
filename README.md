@@ -70,7 +70,7 @@ If _height_ is truthy, sets the height (in pixels) of the widget to be _height_,
 
 If _loColor_ is truthy, updates the color of points with low values to be _loColor_. Otherwise, the color of points with low values doesn't change.  
 If _mdColor_ is truthy, updates the color of points with mid-range values to be _mdColor_. Otherwise, the color of points with mid-range values doesn't change.  
-If _hiColor_ is truthy, updates the color of points with high values to be _hiColor_. Otherwise, the color of points with high values doesn't change.
+If _hiColor_ is truthy, updates the color of points with high values to be _hiColor_. Otherwise, the color of points with high values doesn't change.  
 If _numColors_ is truthy, updates the number of colors in the interpolation of _loColor_, _mdColor_, and _hiColor_. Otherwise, the number of colors doesn't change.
 
 <a name='updateColorScaling' href='#updateColorScaling'>#</a> _chart_.**updateColorScaling**([_categorical_])
