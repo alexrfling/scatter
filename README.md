@@ -28,7 +28,7 @@ new **Scatter**(_id_)
 Constructs a new Scatter widget with parent element set to the HTML element in the DOM with id _id_. Note that this does not modify the DOM.
 
 ### Methods
-<a name='initialize' href='#initialize'>#</a> _chart_.**initialize**(_data_, _xKey_, _yKey_, [, _options_])
+<a name='initialize' href='#initialize'>#</a> _chart_.**initialize**(_data_, _xKey_, _yKey_[, _options_])
 
 Binds _data_ to _chart_ and renders a scatter plot inside the widget's parent element.
 * _data_ - an array of objects
@@ -101,7 +101,7 @@ Updates the color of points to be determined by _key_, if _categorical_ is truth
 
 Updates the color of points to be determined by _key_, if _categorical_ is falsy.
 
-<a name='updateData' href='#updateData'>#</a> _chart_.**updateData**(_data_, _xKey_, _yKey_, [, _options_])
+<a name='updateData' href='#updateData'>#</a> _chart_.**updateData**(_data_, _xKey_, _yKey_[, _options_])
 
 Binds _data_ to _chart_ and updates the scatter plot accordingly. _data_, _xKey_, _yKey_, and, if provided, _options_ should be of the same form as described in <a href='#initialize'>initialize</a>.
 
