@@ -24,14 +24,15 @@ In the head of your HTML document, include:
 ## Usage
 
 ### Constructor
-new **Scatter**(_id_)  
+<a name='constructor' href='#constructor'>#</a> new **Scatter**(_id_)
+
 Constructs a new Scatter widget with parent element set to the HTML element in the DOM with id _id_. Note that this does not modify the DOM.
 
 ### Methods
 <a name='initialize' href='#initialize'>#</a> _chart_.**initialize**(_data_, _xKey_, _yKey_[, _options_])
 
 Binds _data_ to _chart_ and renders a scatter plot inside the widget's parent element.
-* _data_ - an array of objects
+* _data_ - an array of objects, each of which will have a point in the scatter plot, with its x-position determined by its `xKey` field and its y-position determined by its `yKey` field
 * _xKey_ - a key for which each object in _data_ has a number. This will be used to determine the x-position of each point in the scatter plot
 * _yKey_ - a key for which each object in _data_ has a number. This will be used to determine the y-position of each point in the scatter plot
 * _options_ - an object specifying various attributes of the rendering and widget
