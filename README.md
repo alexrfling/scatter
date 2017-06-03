@@ -50,12 +50,12 @@ Binds _data_ to _chart_ and renders a scatter plot inside the widget's parent el
   * **mdColor** - the color to be associated with points that have a mid-range value for **fKeyContinuous** (default: `darkgrey`)
   * **hiColor** - the color to be associated with points that have a high value for **fKeyContinuous** (default: `#109618`)
   * **numColors** - the number of colors in the interpolation of **loColor**, **mdColor**, and **hiColor**
-  * **colorsContinuous** - the range of colors to be used if **categorical** is falsy (default: an interpolation from **loColor** to **mdColor** to **hiColor** consisting of **numColors** strings)
+  * **colorsContinuous** - an array of colors to be used if **categorical** is falsy (default: an interpolation from **loColor** to **mdColor** to **hiColor** consisting of **numColors** strings)
   * **defaultColor** - the color of each point if **fKeyCategorical** is falsy and **categorical** is truthy, or if both **fKeyContinuous** and **categorical** are falsy (default: `'black'`)
-  * **categorical** - if truthy, the color of the points is determined by **fKeyCategorical**, otherwise they are determined by **fKeyContinuous**
-  * **minRadius** - the smallest radius on a point possible if **rKey** is truthy (default: `4`)
-  * **maxRadius** - the largest radius on a point possible if **rKey** is truthy (default: `16`)
-  * **defaultRadius** - the radius of each point if **rKey** is falsy (default: `8`)
+  * **categorical** - if truthy, the color of the points is determined by **fKeyCategorical**, otherwise it is determined by **fKeyContinuous**
+  * **minRadius** - if **rKey** is truthy, this is the radius of the point(s) having the smallest value for **rKey** (default: `4`)
+  * **maxRadius** - if **rKey** is truthy, this is the radius of the point(s) having the largest value for **rKey** (default: `16`)
+  * **defaultRadius** - if **rKey** is falsy, this is the radius of each point (default: `8`)
   * **defaultOpacity** - the opacity of each point (default: `0.25`)
   * **noTransition** - if truthy, the widget will render/update without transitions. Otherwise, the widget will render/update with transitions
   * **tooltipFormat** - the function used to format numerical values in the tooltip (default: `d3.format('.7')`)
