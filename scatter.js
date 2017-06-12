@@ -81,6 +81,7 @@ class Scatter extends Widget {
             }
         );
 
+        // scales for point attributes (cx, cy, r, fill)
         me.scaleX = d3.scaleLinear();
         me.scaleY = d3.scaleLinear();
         me.scaleR = d3.scaleLinear();
