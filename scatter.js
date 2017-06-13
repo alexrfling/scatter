@@ -102,6 +102,7 @@ class Scatter extends Widget {
                 tickFormat: d3.format('.1')
             }
         );
+
         me.axisY = new Axis(
             me.container.svg,
             'axis',
@@ -147,6 +148,7 @@ class Scatter extends Widget {
             me.key
         );
 
+        // tooltip for points
         me.tooltip = d3.tip()
             .attr('class', 'd3-tip')
             .direction('w')
