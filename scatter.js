@@ -43,24 +43,24 @@ class Scatter extends Widget {
         me.yKey = yKey;
 
         // key options
-        me.rKey = options.rKey;
-        me.fKeyCategorical = options.fKeyCategorical;
-        me.fKeyContinuous = options.fKeyContinuous;
+        me.rKey = (options.rKey || null);
+        me.fKeyCategorical = (options.fKeyCategorical || null);
+        me.fKeyContinuous = (options.fKeyContinuous || null);
 
         // color options
+        me.loColor = (options.loColor || '#3366cc');
+        me.mdColor = (options.mdColor || 'darkgrey');
+        me.hiColor = (options.hiColor || '#109618');
+        me.numColors = (options.numColors || 256);
+        me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, me.mdColor, me.hiColor, me.numColors));
         me.colorsCategorical = (options.colorsCategorical || [
             '#109618', '#3366cc', '#dc3912', '#ff9900', '#990099',
             '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395',
             '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300',
             '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac'
         ]);
-        me.loColor = (options.loColor || '#3366cc');
-        me.mdColor = (options.mdColor || 'darkgrey');
-        me.hiColor = (options.hiColor || '#109618');
-        me.numColors = (options.numColors || 256);
         me.defaultColor = (options.defaultColor || 'black');
-        me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, me.mdColor, me.hiColor, me.numColors));
-        me.categorical = options.categorical;
+        me.categorical = (options.categorical === undefined ? false : options.categorical);
 
         // size options
         me.minRadius = (options.minRadius || 4);
