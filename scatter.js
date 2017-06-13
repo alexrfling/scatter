@@ -37,12 +37,17 @@ class Scatter extends Widget {
         var me = this;
         options = (options || {});
 
+        // required
         me.data = data;
         me.xKey = xKey;
         me.yKey = yKey;
+
+        // key options
         me.rKey = options.rKey;
         me.fKeyCategorical = options.fKeyCategorical;
         me.fKeyContinuous = options.fKeyContinuous;
+
+        // color options
         me.colorsCategorical = (options.colorsCategorical || [
             '#109618', '#3366cc', '#dc3912', '#ff9900', '#990099',
             '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395',
@@ -56,14 +61,21 @@ class Scatter extends Widget {
         me.defaultColor = (options.defaultColor || 'black');
         me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, me.mdColor, me.hiColor, me.numColors));
         me.categorical = options.categorical;
+
+        // size options
         me.minRadius = (options.minRadius || 4);
         me.maxRadius = (options.maxRadius || 16);
         me.defaultRadius = (options.defaultRadius || 8);
+
+        // miscellaneous options
         me.defaultOpacity = (options.defaultOpacity || 0.25);
         me.scaleOverUnder = (options.scaleOverUnder || Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE));
+
+        // standard options
         me.tooltipFormat = (options.tooltipFormat || d3.format('.7'));
         me.noTransition = (options.noTransition === undefined ? false : options.noTransition);
 
+        // set initial limits
         me.setLimits();
 
         // clear out DOM elements inside parent
