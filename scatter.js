@@ -60,9 +60,10 @@ class Scatter extends Widget {
         me.maxRadius = (options.maxRadius || 16);
         me.defaultRadius = (options.defaultRadius || 8);
         me.defaultOpacity = (options.defaultOpacity || 0.25);
-        me.noTransition = options.noTransition;
-        me.tooltipFormat = (options.tooltipFormat || d3.format('.7'));
         me.scaleOverUnder = (options.scaleOverUnder || Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE));
+        me.tooltipFormat = (options.tooltipFormat || d3.format('.7'));
+        me.noTransition = (options.noTransition === undefined ? false : options.noTransition);
+
         me.setLimits();
 
         // clear out DOM elements inside parent
