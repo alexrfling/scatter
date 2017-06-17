@@ -63,8 +63,8 @@ Binds _data_ to _chart_ and renders a scatter plot inside the widget's parent el
 
 <a name='resize' href='#resize'>#</a> _chart_.__resize__([_width_[, _height_]])
 
-If _width_ is truthy, sets the width (in pixels) of the widget to be _width_, otherwise the width of the widget doesn't change.  
-If _height_ is truthy, sets the height (in pixels) of the widget to be _height_, otherwise the height of the widget doesn't change.
+If _width_ is truthy, sets the width (in pixels) of the widget to be _width_. Otherwise, the width of the widget doesn't change.  
+If _height_ is truthy, sets the height (in pixels) of the widget to be _height_. Otherwise, the height of the widget doesn't change.
 
 <a name='updateColors' href='#updateColors'>#</a> _chart_.__updateColors__([_loColor_[, _mdColor_[, _posColor_[, _numColors_]]]])
 
