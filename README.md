@@ -44,7 +44,7 @@ Binds _data_ to _chart_ and renders a scatter plot inside the widget's parent el
   * __loColor__ - the color of points that have a low value for __fKeyContinuous__ (default: `'#3366cc'`)
   * __mdColor__ - the color of points that have a mid-range value for __fKeyContinuous__ (default: `'darkgrey'`)
   * __hiColor__ - the color of points that have a high value for __fKeyContinuous__ (default: `'#109618'`)
-  * __numColors__ - the number of colors in the interpolation of __loColor__, __mdColor__, and __hiColor__
+  * __numColors__ - the number of colors in the interpolation of __loColor__, __mdColor__, and __hiColor__ (default: `256`)
   * __colorsContinuous__ - an array of colors to be used if __categorical__ is falsy (default: an interpolation from __loColor__ to __mdColor__ to __hiColor__ consisting of __numColors__ strings)
   * __colorsCategorical__ - an array of colors to be used if __categorical__ is truthy (default: `[
       '#109618', '#3366cc', '#dc3912', '#ff9900', '#990099',
