@@ -1,7 +1,7 @@
 # scatter
 Interactive scatter plot with d3.js
 
-![alt text](https://raw.githubusercontent.com/alexrfling/scatter/master/img/example.svg)
+![alt text](https://raw.githubusercontent.com/alexrfling/scatter/master/img/example.png)
 
 ## Overview
 `Scatter` takes the id of an HTML element, an array of data, and optional parameters, and generates an interactive scatter plot of the data appended to the HTML element.
