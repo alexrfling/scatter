@@ -1,111 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src='d3-helpers/d3/d3.min.js'></script>
+	<script src='d3-helpers/d3/d3.min.js'></script>
 	<script src='d3-helpers/d3-tip/index.js'></script>
-    <script src='d3-helpers/d3-helpers.js'></script>
-    <script src='scatter.js'></script>
+	<script src='d3-helpers/d3-helpers.js'></script>
+	<script src='scatter.js'></script>
 	<link rel='stylesheet' type='text/css' href='d3-helpers/d3-tip/examples/example-styles.css'>
 	<link rel='stylesheet' type='text/css' href='d3-helpers/widget.css'>
 </head>
 <body>
-    <button onclick='scatter.updateData(genData(Math.random() * 1024), scatter.xKey, scatter.yKey, { rKey: scatter.rKey, fKeyCategorical: scatter.fKeyCategorical, fKeyContinuous: scatter.fKeyContinuous });'>update</button>
-    <select onchange='scatter.updateXKey(this.value);'>
+	<button onclick='scatter.updateData(genData(Math.random() * 1024), scatter.xKey, scatter.yKey, { rKey: scatter.rKey, fKeyCategorical: scatter.fKeyCategorical, fKeyContinuous: scatter.fKeyContinuous });'>update</button>
+	<select onchange='scatter.updateXKey(this.value);'>
 		<option value='w'>w</option>
 		<option value='x' selected>x</option>
 		<option value='y'>y</option>
 		<option value='z'>z</option>
-        <option value='xy'>xy</option>
-        <option value='zz'>zz</option>
+		<option value='xy'>xy</option>
+		<option value='zz'>zz</option>
 	</select>
-    <select onchange='scatter.updateYKey(this.value);'>
+	<select onchange='scatter.updateYKey(this.value);'>
 		<option value='w'>w</option>
 		<option value='x'>x</option>
 		<option value='y' selected>y</option>
 		<option value='z'>z</option>
-        <option value='xy'>xy</option>
-        <option value='zz'>zz</option>
+		<option value='xy'>xy</option>
+		<option value='zz'>zz</option>
 	</select>
-    <select onchange='scatter.updateRKey(this.value === "null" ? null : this.value);'>
-        <option value='null'>none</option>
+	<select onchange='scatter.updateRKey(this.value === "null" ? null : this.value);'>
+		<option value='null'>none</option>
 		<option value='w'>w</option>
 		<option value='x'>x</option>
 		<option value='y'>y</option>
 		<option value='z' selected>z</option>
-        <option value='xy'>xy</option>
-        <option value='zz'>zz</option>
+		<option value='xy'>xy</option>
+		<option value='zz'>zz</option>
 	</select>
-    <select onchange='scatter.updateFKeyCategorical(this.value === "null" ? null : this.value);'>
-        <option value='null'>none</option>
+	<select onchange='scatter.updateFKeyCategorical(this.value === "null" ? null : this.value);'>
+		<option value='null'>none</option>
 		<option value='w'>w</option>
 		<option value='x'>x</option>
 		<option value='y'>y</option>
 		<option value='z'>z</option>
-        <option value='xy'>xy</option>
-        <option value='zz'>zz</option>
-        <option value='label' selected>label</option>
+		<option value='xy'>xy</option>
+		<option value='zz'>zz</option>
+		<option value='label' selected>label</option>
 	</select>
-    <select onchange='scatter.updateFKeyContinuous(this.value === "null" ? null : this.value);'>
-        <option value='null'>none</option>
+	<select onchange='scatter.updateFKeyContinuous(this.value === "null" ? null : this.value);'>
+		<option value='null'>none</option>
 		<option value='w'>w</option>
 		<option value='x'>x</option>
 		<option value='y'>y</option>
 		<option value='z'>z</option>
-        <option value='xy'>xy</option>
-        <option value='zz' selected>zz</option>
+		<option value='xy'>xy</option>
+		<option value='zz' selected>zz</option>
 	</select>
-    <select onchange='scatter.updateColorScaling(this.value === "true");'>
+	<select onchange='scatter.updateColorScaling(this.value === "true");'>
 		<option value='true' selected>cat</option>
 		<option value='false'>con</option>
 	</select>
-    <div id='parent' style='border:solid 1px black;'></div>
+	<div id='parent' style='border:solid 1px black;'></div>
 	<script>
-        function genData (size) {
-            var arr = [];
-            var max = Number.MAX_VALUE / 256;
-            var wMax = Math.floor(Math.random() * max);
-            var xMax = Math.floor(Math.random() * max);
-            var yMax = Math.floor(Math.random() * max);
-            var zMax = Math.floor(Math.random() * max);
-            var s = Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE);
+	function genData (size) {
+		var arr = [];
+		var max = Number.MAX_VALUE / 256;
+		var wMax = Math.floor(Math.random() * max);
+		var xMax = Math.floor(Math.random() * max);
+		var yMax = Math.floor(Math.random() * max);
+		var zMax = Math.floor(Math.random() * max);
+		var s = Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE);
 
-            for (var j = 0; j < size; j++) {
-                var point = {
-                    key: String(j),
-                    w: Math.floor(Math.random() * wMax) - wMax / 2,
-                    x: Math.floor(Math.random() * xMax) - xMax / 2,
-                    y: Math.floor(Math.random() * yMax) - yMax / 2,
-                    z: Math.floor(Math.random() * zMax) - zMax / 2,
-                    label: (Math.random() < 0.5 ? 'yes' : 'no')
-                };
+		for (var j = 0; j < size; j++) {
+			var point = {
+				key: String(j),
+				w: Math.floor(Math.random() * wMax) - wMax / 2,
+				x: Math.floor(Math.random() * xMax) - xMax / 2,
+				y: Math.floor(Math.random() * yMax) - yMax / 2,
+				z: Math.floor(Math.random() * zMax) - zMax / 2,
+				label: (Math.random() < 0.5 ? 'yes' : 'no')
+			};
 
-                var x = point.x / s;
-                var y = point.y / s;
+			var x = point.x / s;
+			var y = point.y / s;
 
-                point.xy = Math.sqrt(x * x + y * y);
-                point.zz = 0.0625 * Math.random() * max - (0.125 + 0.25 * Math.random()) * point.z;
+			point.xy = Math.sqrt(x * x + y * y);
+			point.zz = 0.0625 * Math.random() * max - (0.125 + 0.25 * Math.random()) * point.z;
 
-                arr.push(point);
-            }
+			arr.push(point);
+		}
 
-            return arr;
-        }
+		return arr;
+	}
 
-		var scatter = new d3.Scatter('parent');
-        var data = genData(Math.random() * 1024);
-		var options = {
-            colors: {
-                yes: '#109618',
-                no: '#3366cc'
-            },
-            rKey: 'z',
-            fKeyCategorical: 'label',
-            fKeyContinuous: 'zz',
-            categorical: true,
-			height: 580
-		};
+	var scatter = new d3.Scatter('parent');
+	var data = genData(Math.random() * 1024);
+	var options = {
+		colors: {
+			yes: '#109618',
+			no: '#3366cc'
+		},
+		rKey: 'z',
+		fKeyCategorical: 'label',
+		fKeyContinuous: 'zz',
+		categorical: true,
+		height: 580
+	};
 
-		scatter.initialize(data, 'x', 'y', options);
+	scatter.initialize(data, 'x', 'y', options);
 	</script>
 </body>
 </html>
