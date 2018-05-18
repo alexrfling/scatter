@@ -169,8 +169,20 @@ marginLabelY |            |                                                    |
                         return 500 + Math.sqrt(dx * dx + dy * dy) / me.sMax * me.options.ANIM_DURATION;
                     }
                 },
-                me.data,
-                me.key
+                {
+                    callbacks: {
+                        mouseover: function (d) {
+                            d3.select(this)
+                                .style('opacity', 1);
+                            me.tooltip.show(d);
+                        },
+                        mouseout: function (d) {
+                            d3.select(this)
+                                .style('opacity', me.defaultOpacity);
+                            me.tooltip.hide();
+                        }
+                    }
+                }
             );
 
             // tooltip for points
@@ -200,8 +212,6 @@ marginLabelY |            |                                                    |
             me.container.svg
                 .call(me.tooltip);
 
-            me.bindEventListeners();
-
             me.setMargins();
             me.setAnchors();
             me.setScaleDomainsPositional();
@@ -210,6 +220,7 @@ marginLabelY |            |                                                    |
 
             me.axisX.updateVis();
             me.axisY.updateVis();
+            me.points.updateData(me.data, me.key);
 
             me.points.selection
                 .attr('cx', me.points.attrs.cx)
@@ -225,6 +236,8 @@ marginLabelY |            |                                                    |
                     .attr('r', me.points.attrs.r)
                     .attr('fill', me.points.attrs.fill);
             }
+
+            me.points.bindEventListeners();
         }
 
         setXLimits () {
@@ -414,22 +427,6 @@ marginLabelY |            |                                                    |
             me.points.updateVis('cx', 'cy');
             me.axisX.updateVis();
             me.axisY.updateVis();
-        }
-
-        bindEventListeners () {
-            var me = this;
-
-            me.points.selection
-                .on('mouseover', function (d) {
-                    d3.select(this)
-                        .style('opacity', 1);
-                    me.tooltip.show(d);
-                })
-                .on('mouseout', function (d) {
-                    d3.select(this)
-                        .style('opacity', me.defaultOpacity);
-                    me.tooltip.hide();
-                });
         }
 
         resize (width, height) {
@@ -640,7 +637,7 @@ marginLabelY |            |                                                    |
                     .classed('keep', false);
             }
 
-            me.bindEventListeners();
+            me.points.bindEventListeners();
         }
     }
 
