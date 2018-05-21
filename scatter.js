@@ -85,7 +85,7 @@ marginLabelY |            |                                                    |
 
             // standard options
             me.tooltipFormat = (options.tooltipFormat || d3.format('.7'));
-            me.noTransition = (options.noTransition === undefined ? false : options.noTransition);
+            me.enableTransitions = (options.enableTransitions === undefined ? true : options.enableTransitions);
 
             // set initial limits
             me.setLimits();
@@ -227,14 +227,14 @@ marginLabelY |            |                                                    |
                 .attr('cy', me.points.attrs.cy)
                 .style('opacity', me.defaultOpacity);
 
-            if (me.noTransition) {
-                me.points.updateVis('r', 'fill');
-            } else {
+            if (me.enableTransitions) {
                 me.points.selection
                     .transition()
                     .duration(me.points.attrs.duration)
                     .attr('r', me.points.attrs.r)
                     .attr('fill', me.points.attrs.fill);
+            } else {
+                me.points.updateVis('r', 'fill');
             }
 
             me.points.bindEventListeners();
@@ -537,18 +537,7 @@ marginLabelY |            |                                                    |
         updateVisAttr (attribute) {
             var me = this;
 
-            if (me.noTransition) {
-
-                // update axis if necessary
-                if (attribute === 'cx') {
-                    me.axisX.updateVis();
-                } else if (attribute === 'cy') {
-                    me.axisY.updateVis();
-                }
-
-                // update attribute
-                me.points.updateVis(attribute);
-            } else {
+            if (me.enableTransitions) {
 
                 // update axis if necessary
                 if (attribute === 'cx') {
@@ -562,6 +551,17 @@ marginLabelY |            |                                                    |
                     .transition()
                     .duration(me.points.attrs.duration)
                     .attr(attribute, me.points.attrs[attribute]);
+            } else {
+
+                // update axis if necessary
+                if (attribute === 'cx') {
+                    me.axisX.updateVis();
+                } else if (attribute === 'cy') {
+                    me.axisY.updateVis();
+                }
+
+                // update attribute
+                me.points.updateVis(attribute);
             }
         }
 
@@ -575,21 +575,14 @@ marginLabelY |            |                                                    |
             me.rKey = options.rKey;
             me.fKeyCategorical = options.fKeyCategorical;
             me.fKeyContinuous = options.fKeyContinuous;
-            me.noTransition = options.noTransition;
+            me.enableTransitions = options.enableTransitions;
             me.setLimits();
 
             // scale updates
             me.setScaleDomains();
 
             // visual updates
-            if (me.noTransition) {
-                me.axisX.updateVis();
-                me.axisY.updateVis();
-                me.points.updateData(me.data, me.key);
-                me.points.updateVis('cx', 'cy', 'r', 'fill');
-                me.points.selection
-                    .style('opacity', me.defaultOpacity);
-            } else {
+            if (me.enableTransitions) {
                 me.axisX.updateVis(me.options.ANIM_DURATION);
                 me.axisY.updateVis(me.options.ANIM_DURATION);
 
@@ -635,6 +628,13 @@ marginLabelY |            |                                                    |
                 me.points.selection = me.points.group
                     .selectAll('circle.keep')
                     .classed('keep', false);
+            } else {
+                me.axisX.updateVis();
+                me.axisY.updateVis();
+                me.points.updateData(me.data, me.key);
+                me.points.updateVis('cx', 'cy', 'r', 'fill');
+                me.points.selection
+                    .style('opacity', me.defaultOpacity);
             }
 
             me.points.bindEventListeners();

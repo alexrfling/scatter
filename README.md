@@ -55,7 +55,7 @@ Binds _data_ to _chart_ and renders a scatter plot inside the widget's parent el
   * __defaultRadius__ - if __rKey__ is falsy, this is the radius of each point (default: `8`)
   * __defaultOpacity__ - the opacity of each point (default: `0.25`)
   * __tooltipFormat__ - the function used to format numerical values in the tooltip (default: `d3.format('.7')`)
-  * __noTransition__ - if truthy, the widget will render/update without transitions. Otherwise, the widget will render/update with transitions (default: `false`)
+  * __enableTransitions__ - if truthy, the widget will render/update with transitions; otherwise, the widget will render/update without transitions (default: `true`)
 
 <a name='resize' href='#resize'>#</a> _chart_.__resize__([_width_[, _height_]])
 
