@@ -54,38 +54,34 @@ marginLabelY |            |                                                    |
             me.xKey = xKey;
             me.yKey = yKey;
 
-            // key options
-            me.rKey = (options.rKey || null);
-            me.fKeyCategorical = (options.fKeyCategorical || null);
-            me.fKeyContinuous = (options.fKeyContinuous || null);
+            d3.setDefaultPropertiesFalsy(me, options, {
+                rKey: null,
+                fKeyCategorical: null,
+                fKeyContinuous: null,
+                loColor: '#3366cc',
+                mdColor: 'darkgrey',
+                hiColor: '#109618',
+                numColors: 256,
+                colorsCategorical: [
+                    '#109618', '#3366cc', '#dc3912', '#ff9900', '#990099',
+                    '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395',
+                    '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300',
+                    '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac'
+                ],
+                defaultColor: 'black',
+                minRadius: 4,
+                maxRadius: 16,
+                defaultRadius: 8,
+                defaultOpacity: 0.25,
+                scaleOverUnder: Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE),
+                tooltipFormat: d3.format('.7')
+            });
+            d3.setDefaultPropertiesUndefined(me, options, {
+                categorical: false,
+                enableTransitions: true
+            });
 
-            // color options
-            me.loColor = (options.loColor || '#3366cc');
-            me.mdColor = (options.mdColor || 'darkgrey');
-            me.hiColor = (options.hiColor || '#109618');
-            me.numColors = (options.numColors || 256);
             me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, me.mdColor, me.hiColor, me.numColors));
-            me.colorsCategorical = (options.colorsCategorical || [
-                '#109618', '#3366cc', '#dc3912', '#ff9900', '#990099',
-                '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395',
-                '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300',
-                '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac'
-            ]);
-            me.defaultColor = (options.defaultColor || 'black');
-            me.categorical = (options.categorical === undefined ? false : options.categorical);
-
-            // size options
-            me.minRadius = (options.minRadius || 4);
-            me.maxRadius = (options.maxRadius || 16);
-            me.defaultRadius = (options.defaultRadius || 8);
-
-            // miscellaneous options
-            me.defaultOpacity = (options.defaultOpacity || 0.25);
-            me.scaleOverUnder = (options.scaleOverUnder || Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE));
-
-            // standard options
-            me.tooltipFormat = (options.tooltipFormat || d3.format('.7'));
-            me.enableTransitions = (options.enableTransitions === undefined ? true : options.enableTransitions);
 
             // set initial limits
             me.setLimits();
