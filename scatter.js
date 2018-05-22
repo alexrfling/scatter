@@ -90,21 +90,7 @@ marginLabelY |            |                                                    |
             // set initial limits
             me.setLimits();
 
-            // clear out DOM elements inside parent
-            me.destroy();
-
-            // holds all HTML and SVG elements
-            me.container = new d3.SVGContainer(
-                me.id,
-                'd3-helpers-widget-div',
-                'd3-helpers-widget-svg',
-                me.options.SVG_MARGINS,
-                options.width,
-                (options.height || me.options.DEFAULT_HEIGHT),
-                {
-                    onWindowResize: (options.width ? null : function () { me.resize.call(me); })
-                }
-            );
+            me.container = me.newDefaultSVGContainer(options);
 
             // scales for point attributes (cx, cy, r, fill)
             me.scaleX = d3.scaleLinear();
