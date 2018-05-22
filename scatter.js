@@ -554,10 +554,14 @@ marginLabelY |            |                                                    |
             me.data = data;
             me.xKey = xKey;
             me.yKey = yKey;
-            me.rKey = options.rKey;
-            me.fKeyCategorical = options.fKeyCategorical;
-            me.fKeyContinuous = options.fKeyContinuous;
-            me.enableTransitions = options.enableTransitions;
+            d3.setDefaultPropertiesFalsy(me, options, {
+                rKey: me.rKey,
+                fKeyCategorical: me.fKeyCategorical,
+                fKeyContinuous: me.fKeyContinuous
+            });
+            d3.setDefaultPropertiesUndefined(me, options, {
+                enableTransitions: me.enableTransitions
+            });
             me.setLimits();
 
             // scale updates
