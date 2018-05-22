@@ -47,13 +47,10 @@ marginLabelY |            |                                                    |
 
         initialize (data, xKey, yKey, options) {
             var me = this;
-            options = (options || {});
-
-            // required
             me.data = data;
             me.xKey = xKey;
             me.yKey = yKey;
-
+            options = (options || {});
             d3.setDefaultPropertiesFalsy(me, options, {
                 rKey: null,
                 fKeyCategorical: null,
@@ -549,11 +546,10 @@ marginLabelY |            |                                                    |
 
         updateData (data, xKey, yKey, options) {
             var me = this;
-            options = (options || {});
-
             me.data = data;
             me.xKey = xKey;
             me.yKey = yKey;
+            options = (options || {});
             d3.setDefaultPropertiesFalsy(me, options, {
                 rKey: me.rKey,
                 fKeyCategorical: me.fKeyCategorical,
