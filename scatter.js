@@ -83,8 +83,6 @@ marginLabelY |            |                                                    |
             // set initial limits
             me.setLimits();
 
-            me.container = me.newDefaultSVGContainer(options);
-
             // scales for point attributes (cx, cy, r, fill)
             me.scaleX = d3.scaleLinear();
             me.scaleY = d3.scaleLinear();
@@ -95,6 +93,9 @@ marginLabelY |            |                                                    |
             // initalize scales
             me.setScaleDomains();
             me.setScaleRanges();
+
+            // container to hold all visual elements
+            me.container = me.newDefaultSVGContainer(options);
 
             me.axisX = new d3.Axis(
                 me.container.svg,
