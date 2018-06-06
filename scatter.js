@@ -78,11 +78,6 @@ marginLabelY |            |                                                    |
                 enableTransitions: true
             });
 
-            me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, me.mdColor, me.hiColor, me.numColors));
-
-            // set initial limits
-            me.setLimits();
-
             // scales for point attributes (cx, cy, r, fill)
             me.scaleX = d3.scaleLinear();
             me.scaleY = d3.scaleLinear();
@@ -187,6 +182,11 @@ marginLabelY |            |                                                    |
             // invoke tooltip
             me.container.svg
                 .call(me.tooltip);
+
+            me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, me.mdColor, me.hiColor, me.numColors));
+
+            // set initial limits
+            me.setLimits();
 
             me.setMargins();
             me.setAnchors();
