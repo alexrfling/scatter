@@ -90,10 +90,6 @@ marginLabelY |            |                                                    |
             me.scaleFillCategorical = d3.scaleOrdinal();
             me.scaleFillContinuous = d3.scaleQuantize();
 
-            // initalize scales
-            me.setScaleDomains();
-            me.setScaleRanges();
-
             // container to hold all visual elements
             me.container = me.newDefaultSVGContainer(options);
 
@@ -194,8 +190,8 @@ marginLabelY |            |                                                    |
 
             me.setMargins();
             me.setAnchors();
-            me.setScaleDomainsPositional();
-            me.setScaleRangesPositional();
+            me.setScaleDomains();
+            me.setScaleRanges();
             me.positionElements();
 
             me.axisX.updateVis();
