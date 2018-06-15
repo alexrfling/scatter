@@ -73,6 +73,9 @@ marginLabelY |            |                                                    |
                 scaleOverUnder: Math.sqrt(2) * Math.sqrt(Number.MAX_VALUE),
                 tooltipFormat: d3.format('.7')
             });
+            d3.setDefaultPropertiesFalsy(me, options, {
+                colorsContinuous: me.interpolateColors(me.loColor, me.mdColor, me.hiColor, me.numColors)
+            });
             d3.setDefaultPropertiesUndefined(me, options, {
                 categorical: false,
                 enableTransitions: true
@@ -182,8 +185,6 @@ marginLabelY |            |                                                    |
             // invoke tooltip
             me.container.svg
                 .call(me.tooltip);
-
-            me.colorsContinuous = (options.colorsContinuous || me.interpolateColors(me.loColor, me.mdColor, me.hiColor, me.numColors));
 
             // set initial limits
             me.setLimits();
