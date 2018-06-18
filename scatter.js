@@ -189,31 +189,31 @@ marginLabelY |            |                                                    |
             me.container.svg
                 .call(me.tooltip);
 
-            // set initial limits
+            // set limits, margins, anchors, scales, and position all elements
             me.setLimits();
-
-            // set margins, anchors, scales, and position all elements
             me.setMargins();
             me.setAnchors();
             me.setScaleDomains();
             me.setScaleRanges();
             me.positionElements();
 
-            // initialize axes and points
-            me.axisX.updateVis();
-            me.axisY.updateVis();
+            // initialize points
             me.points.updateData(me.data, me.key);
-
             me.points.updateVis('cx', 'cy');
             me.points.updateStyle('opacity');
 
+            // visual initialization
             if (me.enableTransitions) {
+                me.axisX.updateVis(me.options.ANIM_DURATION);
+                me.axisY.updateVis(me.options.ANIM_DURATION);
                 me.points.selection
                     .transition()
                     .duration(me.points.attrs.duration)
                     .attr('r', me.points.attrs.r)
                     .attr('fill', me.points.attrs.fill);
             } else {
+                me.axisX.updateVis();
+                me.axisY.updateVis();
                 me.points.updateVis('r', 'fill');
             }
 
