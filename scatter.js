@@ -155,6 +155,9 @@ marginLabelY |            |                                                    |
                                 .style('opacity', me.defaultOpacity);
                             me.tooltip.hide();
                         }
+                    },
+                    styles: {
+                        opacity: function () { return me.defaultOpacity; }
                     }
                 }
             );
@@ -201,10 +204,8 @@ marginLabelY |            |                                                    |
             me.axisY.updateVis();
             me.points.updateData(me.data, me.key);
 
-            me.points.selection
-                .attr('cx', me.points.attrs.cx)
-                .attr('cy', me.points.attrs.cy)
-                .style('opacity', me.defaultOpacity);
+            me.points.updateVis('cx', 'cy');
+            me.points.updateStyle('opacity');
 
             if (me.enableTransitions) {
                 me.points.selection
@@ -615,8 +616,7 @@ marginLabelY |            |                                                    |
                 me.axisY.updateVis();
                 me.points.updateData(me.data, me.key);
                 me.points.updateVis('cx', 'cy', 'r', 'fill');
-                me.points.selection
-                    .style('opacity', me.defaultOpacity);
+                me.points.updateStyle('opacity');
             }
 
             me.points.bindEventListeners();
