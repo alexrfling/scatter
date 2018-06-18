@@ -559,9 +559,9 @@ marginLabelY |            |                                                    |
             d3.setDefaultPropertiesUndefined(me, options, {
                 enableTransitions: me.enableTransitions
             });
-            me.setLimits();
 
-            // scale updates
+            // update limits and scales
+            me.setLimits();
             me.setScaleDomains();
 
             // visual updates
