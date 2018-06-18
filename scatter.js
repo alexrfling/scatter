@@ -189,12 +189,14 @@ marginLabelY |            |                                                    |
             // set initial limits
             me.setLimits();
 
+            // set margins, anchors, scales, and position all elements
             me.setMargins();
             me.setAnchors();
             me.setScaleDomains();
             me.setScaleRanges();
             me.positionElements();
 
+            // initialize axes and points
             me.axisX.updateVis();
             me.axisY.updateVis();
             me.points.updateData(me.data, me.key);
