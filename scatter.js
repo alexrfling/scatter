@@ -569,7 +569,8 @@ marginLabelY |            |                                                    |
                 me.axisX.updateVis(me.options.ANIM_DURATION);
                 me.axisY.updateVis(me.options.ANIM_DURATION);
 
-                // add temporary classes to separate old bars from bars to be kept
+                // add temporary classes to separate points to be removed from
+                // points to be kept
                 me.points.group
                     .selectAll('circle')
                     .data(me.data, me.key)
@@ -580,7 +581,8 @@ marginLabelY |            |                                                    |
                     .filter(function () { return (this.className.baseVal !== 'remove'); })
                     .attr('class', 'keep');
 
-                // add new points, invisible, with same class as points to be kept
+                // add new points, invisible, with same class as points to be
+                // kept
                 me.points.group
                     .selectAll('circle')
                     .data(me.data, me.key)
