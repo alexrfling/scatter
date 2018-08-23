@@ -569,50 +569,36 @@ marginLabelY |            |                                                    |
                 me.axisX.updateVis(me.options.ANIM_DURATION);
                 me.axisY.updateVis(me.options.ANIM_DURATION);
 
-                // add temporary classes to separate points to be removed from
-                // points to be kept
-                me.points.group
-                    .selectAll('circle')
-                    .data(me.data, me.key)
+                // update point data and selection (selection = updated points,
+                // selection.exit = old points, selection.enter = new points)
+                me.points.selection = me.points.selection
+                    .data(me.data, me.key);
+
+                // transition and remove old points
+                me.points.selection
                     .exit()
-                    .attr('class', 'remove');
-                me.points.group
-                    .selectAll('circle')
-                    .filter(function () { return (this.className.baseVal !== 'remove'); })
-                    .attr('class', 'keep');
-
-                // add new points, invisible, with same class as points to be
-                // kept
-                me.points.group
-                    .selectAll('circle')
-                    .data(me.data, me.key)
-                    .enter()
-                    .append('circle')
-                    .attr('class', 'keep')
-                    .attr('cx', me.points.attrs.cx)
-                    .attr('cy', me.points.attrs.cy)
-                    .style('opacity', me.defaultOpacity);
-
-                // transition all points (old points removed)
-                me.points.group
-                    .selectAll('circle.remove')
                     .transition()
                     .duration(me.points.attrs.duration)
                     .attr('r', 0)
                     .remove();
-                me.points.group
-                    .selectAll('circle.keep')
+
+                // add new points to the selection
+                me.points.selection = me.points.selection
+                    .enter()
+                    .append('circle')
+                    .attr('cx', me.points.attrs.cx)
+                    .attr('cy', me.points.attrs.cy)
+                    .style('opacity', me.defaultOpacity)
+                    .merge(me.points.selection);
+
+                // transition updated points + new points
+                me.points.selection
                     .transition()
                     .duration(me.points.attrs.duration)
                     .attr('cx', me.points.attrs.cx)
                     .attr('cy', me.points.attrs.cy)
                     .attr('r', me.points.attrs.r)
                     .attr('fill', me.points.attrs.fill);
-
-                // update point selection
-                me.points.selection = me.points.group
-                    .selectAll('circle.keep')
-                    .classed('keep', false);
             } else {
                 me.axisX.updateVis();
                 me.axisY.updateVis();
